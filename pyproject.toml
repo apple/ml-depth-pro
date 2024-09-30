@@ -1,0 +1,59 @@
+[project]
+name = "depth_pro"
+version = "0.1"
+description = "Inference/Network/Model code for Apple Depth Pro monocular depth estimation."
+readme = "README.md"
+dependencies = [
+    "torch",
+    "torchvision",
+    "timm",
+    "numpy<2",
+    "pillow_heif",
+    "matplotlib",
+]
+
+[project.scripts]
+depth-pro-run = "depth_pro.cli:run_main"
+
+[project.urls]
+Homepage = "https://github.com/apple/ml-depth-pro"
+Repository = "https://github.com/apple/ml-depth-pro"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pyright]
+include = ["src"]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+]
+pythonVersion = "3.9"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
+
+[tool.lint.per-file-ignores]
+"__init__.py" = ["F401", "D100", "D104"]
+
+[tool.ruff]
+line-length = 100
+lint.select = ["E", "F", "D", "I"]
+lint.ignore = ["D100", "D105"]
+extend-exclude = [
+    "*external*",
+    "third_party",
+]
+src = ["depth_pro", "tests"]
+target-version = "py39"
