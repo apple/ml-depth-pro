@@ -203,7 +203,7 @@ class DepthPro(nn.Module):
             nn.ReLU(),
         )
 
-        # Set the final convoultion layer's bias to be 0.
+        # Set the final convolution layer's bias to be 0.
         self.head[4].bias.data.fill_(0)
 
         # Set the FOV estimation head.
