@@ -1,7 +1,7 @@
 ## Depth Pro: Sharp Monocular Metric Depth in Less Than a Second
 
 This software project accompanies the research paper:
-**Depth Pro: Sharp Monocular Metric Depth in Less Than a Second**, 
+**[Depth Pro: Sharp Monocular Metric Depth in Less Than a Second](https://arxiv.org/abs/2410.02073)**, 
 *Aleksei Bochkovskii, Amaël Delaunoy, Hugo Germain, Marcel Santos, Yichao Zhou, Stephan R. Richter, and Vladlen Koltun*.
 
 ![](data/depth-pro-teaser.jpg)
@@ -81,6 +81,7 @@ If you find our work useful, please cite the following paper:
   title      = {Depth Pro: Sharp Monocular Metric Depth in Less Than a Second},
   journal    = {arXiv},
   year       = {2024},
+  url        = {https://arxiv.org/abs/2410.02073},
 }
 ```
 
