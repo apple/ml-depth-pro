@@ -75,6 +75,14 @@ def run(args):
             focallength_px = prediction["focallength_px"].detach().cpu().item()
             LOGGER.info(f"Estimated focal length: {focallength_px}")
 
+        inverse_depth = 1 / depth
+        # Visualize inverse depth instead of depth, clipped to [0.1m;250m] range for better visualization.
+        max_invdepth_vizu = min(inverse_depth.max(), 1 / 0.1)
+        min_invdepth_vizu = max(1 / 250, inverse_depth.min())
+        inverse_depth_normalized = (inverse_depth - min_invdepth_vizu) / (
+            max_invdepth_vizu - min_invdepth_vizu
+        )
+
         # Save Depth as npz file.
         if args.output_path is not None:
             output_file = (
@@ -87,11 +95,8 @@ def run(args):
             np.savez_compressed(output_file, depth=depth)
 
             # Save as color-mapped "turbo" jpg image.
-            cmap = plt.get_cmap("turbo_r")
-            normalized_depth = (depth - depth.min()) / (
-                depth.max() - depth.min()
-            )
-            color_depth = (cmap(normalized_depth)[..., :3] * 255).astype(
+            cmap = plt.get_cmap("turbo")
+            color_depth = (cmap(inverse_depth_normalized)[..., :3] * 255).astype(
                 np.uint8
             )
             color_map_output_file = str(output_file) + ".jpg"
@@ -103,7 +108,7 @@ def run(args):
         # Display the image and estimated depth map.
         if not args.skip_display:
             ax_rgb.imshow(image)
-            ax_disp.imshow(depth, cmap="turbo_r")
+            ax_disp.imshow(inverse_depth_normalized, cmap="turbo")
             fig.canvas.draw()
             fig.canvas.flush_events()
 
