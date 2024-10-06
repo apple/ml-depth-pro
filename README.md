@@ -9,11 +9,11 @@ This software project accompanies the research paper:
 We present a foundation model for zero-shot metric monocular depth estimation. Our model, Depth Pro, synthesizes high-resolution depth maps with unparalleled sharpness and high-frequency details. The predictions are metric, with absolute scale, without relying on the availability of metadata such as camera intrinsics. And the model is fast, producing a 2.25-megapixel depth map in 0.3 seconds on a standard GPU. These characteristics are enabled by a number of technical contributions, including an efficient multi-scale vision transformer for dense prediction, a training protocol that combines real and synthetic datasets to achieve high metric accuracy alongside fine boundary tracing, dedicated evaluation metrics for boundary accuracy in estimated depth maps, and state-of-the-art focal length estimation from a single image.
 
 
-The model in this repository is a reference implementation, which has been re-trained. Its performance is close to the model reported in the paper but does not match it exactly.
+The model in this repository is a reference implementation, which has been re-trained. Its performance is close to the model reported in the paper, but does not match it exactly.
 
 ## Getting Started
 
-We recommend setting up a virtual environment. Using e.g. miniconda, the `depth_pro` package can be installed via:
+We recommend setting up a virtual environment. Using e.g., miniconda, the `depth_pro` package can be installed via:
 
 ```bash
 conda create -n depth-pro -y python=3.9
@@ -27,13 +27,13 @@ To download pretrained checkpoints follow the code snippet below:
 source get_pretrained_models.sh   # Files will be downloaded to `checkpoints` directory.
 ```
 
-### Running from commandline
+### Running from command line
 
 We provide a helper script to directly run the model on a single image:
 ```bash
-# Run prediction on a single image:
+# Run predictions on a single image:
 depth-pro-run -i ./data/example.jpg
-# Run `depth-pro-run -h` for available options.
+# Run `depth-pro-run -h` to see available options.
 ```
 
 ### Running from python
@@ -59,7 +59,7 @@ focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 
 ### Evaluation (boundary metrics) 
 
-Our boundary metrics can be found under `eval/boundary_metrics.py` and used as follows:
+Our boundary metrics can be found under `eval/boundary_metrics.py` and are used as follows:
 
 ```python
 # for a depth-based dataset
