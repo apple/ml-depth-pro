@@ -49,6 +49,7 @@ model, transform = depth_pro.create_model_and_transforms()
 model.eval()
 
 # Load and preprocess an image.
+image_path = "./data/example.jpg"
 image, _, f_px = depth_pro.load_rgb(image_path)
 image = transform(image)
 
