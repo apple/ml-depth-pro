@@ -16,6 +16,8 @@ The model in this repository is a reference implementation, which has been re-tr
 We recommend setting up a virtual environment. Using e.g. miniconda, the `depth_pro` package can be installed via:
 
 ```bash
+git clone https://github.com/apple/ml-depth-pro.git && cd ml-depth-pro
+
 conda create -n depth-pro -y python=3.9
 conda activate depth-pro
 
