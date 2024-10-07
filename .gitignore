@@ -212,3 +212,4 @@ pyrightconfig.json
 data/**
 checkpoints/**
 output/**
+.vscode/**
