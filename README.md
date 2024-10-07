@@ -1,7 +1,7 @@
 ## Depth Pro: Sharp Monocular Metric Depth in Less Than a Second
 
 This software project accompanies the research paper:
-**[Depth Pro: Sharp Monocular Metric Depth in Less Than a Second](https://arxiv.org/abs/2410.02073)**, 
+**[Depth Pro: Sharp Monocular Metric Depth in Less Than a Second](https://arxiv.org/abs/2410.02073)**,
 *Aleksei Bochkovskii, Amaël Delaunoy, Hugo Germain, Marcel Santos, Yichao Zhou, Stephan R. Richter, and Vladlen Koltun*.
 
 ![](data/depth-pro-teaser.jpg)
@@ -57,7 +57,7 @@ focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 ```
 
 
-### Evaluation (boundary metrics) 
+### Evaluation (boundary metrics)
 
 Our boundary metrics can be found under `eval/boundary_metrics.py` and used as follows:
 
@@ -65,8 +65,14 @@ Our boundary metrics can be found under `eval/boundary_metrics.py` and used as f
 # for a depth-based dataset
 boundary_f1 = SI_boundary_F1(predicted_depth, target_depth)
 
-# for a mask-based dataset (image matting / segmentation) 
+# for a mask-based dataset (image matting / segmentation)
 boundary_recall = SI_boundary_Recall(predicted_depth, target_mask)
+```
+
+### Visualization
+
+```bash
+python src/tools/visualize_rgbd.py --input_depth output/depth.npz --input_image data/rgb.jpeg --focal_length 1500.0
 ```
 
 
