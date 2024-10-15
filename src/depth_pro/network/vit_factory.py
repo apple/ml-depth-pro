@@ -24,6 +24,8 @@ LOGGER = logging.getLogger(__name__)
 
 
 ViTPreset = Literal[
+    "dinov2l16_192",
+    "dinov2l16_288",
     "dinov2l16_384",
 ]
 
@@ -37,6 +39,7 @@ class ViTConfig:
 
     img_size: int = 384
     patch_size: int = 16
+    grid_size: int = 24
 
     # In case we need to rescale the backbone when loading from timm.
     timm_preset: Optional[str] = None
@@ -51,6 +54,30 @@ class ViTConfig:
 
 
 VIT_CONFIG_DICT: Dict[ViTPreset, ViTConfig] = {
+    "dinov2l16_192": ViTConfig(
+        in_chans=3,
+        embed_dim=1024,
+        encoder_feature_layer_ids=[5, 11, 17, 23],
+        encoder_feature_dims=[256, 512, 1024, 1024],
+        img_size=192,
+        patch_size=16,
+        grid_size=24,
+        timm_preset="vit_large_patch14_dinov2",
+        timm_img_size=518,
+        timm_patch_size=14,
+    ),
+    "dinov2l16_288": ViTConfig(
+        in_chans=3,
+        embed_dim=1024,
+        encoder_feature_layer_ids=[5, 11, 17, 23],
+        encoder_feature_dims=[256, 512, 1024, 1024],
+        img_size=288,
+        patch_size=16,
+        grid_size=24,
+        timm_preset="vit_large_patch14_dinov2",
+        timm_img_size=518,
+        timm_patch_size=14,
+    ),
     "dinov2l16_384": ViTConfig(
         in_chans=3,
         embed_dim=1024,
@@ -58,6 +85,7 @@ VIT_CONFIG_DICT: Dict[ViTPreset, ViTConfig] = {
         encoder_feature_dims=[256, 512, 1024, 1024],
         img_size=384,
         patch_size=16,
+        grid_size=24,
         timm_preset="vit_large_patch14_dinov2",
         timm_img_size=518,
         timm_patch_size=14,
@@ -107,7 +135,7 @@ def create_vit(
     if config.patch_size != config.timm_patch_size:
         model.model = resize_patch_embed(model.model, new_patch_size=patch_size)
     if config.img_size != config.timm_img_size:
-        model.model = resize_vit(model.model, img_size=img_size)
+        model.model = resize_vit(model.model, img_size=img_size, grid_size=(config.grid_size, config.grid_size))
 
     if checkpoint_uri is not None:
         state_dict = torch.load(checkpoint_uri, map_location="cpu")

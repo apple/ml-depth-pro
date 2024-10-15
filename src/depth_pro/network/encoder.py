@@ -169,7 +169,7 @@ class DepthProEncoder(nn.Module):
 
     def split(self, x: torch.Tensor, overlap_ratio: float = 0.25) -> torch.Tensor:
         """Split the input into small patches with sliding window."""
-        patch_size = 384
+        patch_size = self.patch_encoder.patch_embed.img_size[0]
         patch_stride = int(patch_size * (1 - overlap_ratio))
 
         image_size = x.shape[-1]

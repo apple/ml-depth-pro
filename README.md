@@ -1,3 +1,5 @@
+# This fork adds `convert_to_coreml.py` script to convert original Depth Pro model to CoreML programs
+
 ## Depth Pro: Sharp Monocular Metric Depth in Less Than a Second
 
 This software project accompanies the research paper:
