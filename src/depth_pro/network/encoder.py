@@ -169,7 +169,7 @@ class DepthProEncoder(nn.Module):
 
     def split(self, x: torch.Tensor, overlap_ratio: float = 0.25) -> torch.Tensor:
         """Split the input into small patches with sliding window."""
-        patch_size = 384
+        patch_size = 256
         patch_stride = int(patch_size * (1 - overlap_ratio))
 
         image_size = x.shape[-1]
@@ -276,7 +276,7 @@ class DepthProEncoder(nn.Module):
             self.out_size,
         )
         x_latent0_features = self.merge(
-            x_latent0_encodings[: batch_size * 5 * 5], batch_size=batch_size, padding=3
+            x_latent0_encodings[: batch_size * 5 * 5], batch_size=batch_size, padding=2
         )
 
         x_latent1_encodings = self.reshape_feature(
@@ -285,21 +285,21 @@ class DepthProEncoder(nn.Module):
             self.out_size,
         )
         x_latent1_features = self.merge(
-            x_latent1_encodings[: batch_size * 5 * 5], batch_size=batch_size, padding=3
+            x_latent1_encodings[: batch_size * 5 * 5], batch_size=batch_size, padding=2
         )
 
         # Split the 35 batch size from pyramid encoding back into 5x5+3x3+1x1.
         x0_encodings, x1_encodings, x2_encodings = torch.split(
             x_pyramid_encodings,
-            [len(x0_patches), len(x1_patches), len(x2_patches)],
+            [x0_patches.shape[0], x1_patches.shape[0], x2_patches.shape[0]],
             dim=0,
         )
 
         # 96x96 feature maps by merging 5x5 @ 24x24 patches with overlaps.
-        x0_features = self.merge(x0_encodings, batch_size=batch_size, padding=3)
+        x0_features = self.merge(x0_encodings, batch_size=batch_size, padding=2)
 
         # 48x84 feature maps by merging 3x3 @ 24x24 patches with overlaps.
-        x1_features = self.merge(x1_encodings, batch_size=batch_size, padding=6)
+        x1_features = self.merge(x1_encodings, batch_size=batch_size, padding=4)
 
         # 24x24 feature maps.
         x2_features = x2_encodings
