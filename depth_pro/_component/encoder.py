@@ -1,17 +1,11 @@
-# Copyright (C) 2024 Apple Inc. All Rights Reserved.
-# DepthProEncoder combining patch and image encoders.
-
-from __future__ import annotations
-
 import math
-from typing import Iterable, Optional
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-class DepthProEncoder(nn.Module):
+class Encoder(nn.Module):
     """DepthPro Encoder.
 
     An encoder aimed at creating multi-resolution encodings from Vision Transformers.
@@ -19,10 +13,10 @@ class DepthProEncoder(nn.Module):
 
     def __init__(
         self,
-        dims_encoder: Iterable[int],
+        dims_encoder: list[int],
         patch_encoder: nn.Module,
         image_encoder: nn.Module,
-        hook_block_ids: Iterable[int],
+        hook_block_ids: list[int],
         decoder_features: int,
     ):
         """Initialize DepthProEncoder.
@@ -45,23 +39,24 @@ class DepthProEncoder(nn.Module):
         """
         super().__init__()
 
-        self.dims_encoder = list(dims_encoder)
+        self.dims_encoder = dims_encoder
         self.patch_encoder = patch_encoder
         self.image_encoder = image_encoder
-        self.hook_block_ids = list(hook_block_ids)
+        self.hook_block_ids = hook_block_ids
 
         patch_encoder_embed_dim = patch_encoder.embed_dim
         image_encoder_embed_dim = image_encoder.embed_dim
 
         self.out_size = int(
-            patch_encoder.patch_embed.img_size[0] // patch_encoder.patch_embed.patch_size[0]
+            patch_encoder.patch_embed.img_size[0]
+            // patch_encoder.patch_embed.patch_size[0]
         )
 
         def _create_project_upsample_block(
             dim_in: int,
             dim_out: int,
             upsample_layers: int,
-            dim_int: Optional[int] = None,
+            dim_int: int | None = None,
         ) -> nn.Module:
             if dim_int is None:
                 dim_int = dim_out
@@ -99,17 +94,25 @@ class DepthProEncoder(nn.Module):
             upsample_layers=3,
         )
         self.upsample_latent1 = _create_project_upsample_block(
-            dim_in=patch_encoder_embed_dim, dim_out=self.dims_encoder[0], upsample_layers=2
+            dim_in=patch_encoder_embed_dim,
+            dim_out=self.dims_encoder[0],
+            upsample_layers=2,
         )
 
         self.upsample0 = _create_project_upsample_block(
-            dim_in=patch_encoder_embed_dim, dim_out=self.dims_encoder[1], upsample_layers=1
+            dim_in=patch_encoder_embed_dim,
+            dim_out=self.dims_encoder[1],
+            upsample_layers=1,
         )
         self.upsample1 = _create_project_upsample_block(
-            dim_in=patch_encoder_embed_dim, dim_out=self.dims_encoder[2], upsample_layers=1
+            dim_in=patch_encoder_embed_dim,
+            dim_out=self.dims_encoder[2],
+            upsample_layers=1,
         )
         self.upsample2 = _create_project_upsample_block(
-            dim_in=patch_encoder_embed_dim, dim_out=self.dims_encoder[3], upsample_layers=1
+            dim_in=patch_encoder_embed_dim,
+            dim_out=self.dims_encoder[3],
+            upsample_layers=1,
         )
 
         self.upsample_lowres = nn.ConvTranspose2d(
@@ -157,12 +160,12 @@ class DepthProEncoder(nn.Module):
 
         # Middle resolution: 768 by default.
         x1 = F.interpolate(
-            x, size=None, scale_factor=0.5, mode="bilinear", align_corners=False
+            x, size=None, scale_factor=0.5, mode='bilinear', align_corners=False
         )
 
         # Low resolution: 384 by default, corresponding to the backbone resolution.
         x2 = F.interpolate(
-            x, size=None, scale_factor=0.25, mode="bilinear", align_corners=False
+            x, size=None, scale_factor=0.25, mode='bilinear', align_corners=False
         )
 
         return x0, x1, x2

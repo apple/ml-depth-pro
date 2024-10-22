@@ -1,24 +1,13 @@
-"""Copyright (C) 2024 Apple Inc. All Rights Reserved.
-
-Dense Prediction Transformer Decoder architecture.
-
-Implements a variant of Vision Transformers for Dense Prediction, https://arxiv.org/abs/2103.13413
-"""
-
-from __future__ import annotations
-
-from typing import Iterable
-
 import torch
 from torch import nn
 
 
-class MultiresConvDecoder(nn.Module):
+class Decoder(nn.Module):
     """Decoder for multi-resolution encodings."""
 
     def __init__(
         self,
-        dims_encoder: Iterable[int],
+        dims_encoder: list[int],
         dim_decoder: int,
     ):
         """Initialize multiresolution convolutional decoder.
@@ -30,7 +19,7 @@ class MultiresConvDecoder(nn.Module):
 
         """
         super().__init__()
-        self.dims_encoder = list(dims_encoder)
+        self.dims_encoder = dims_encoder
         self.dim_decoder = dim_decoder
         self.dim_out = dim_decoder
 
@@ -71,14 +60,14 @@ class MultiresConvDecoder(nn.Module):
             )
         self.fusions = nn.ModuleList(fusions)
 
-    def forward(self, encodings: torch.Tensor) -> torch.Tensor:
+    def forward(self, encodings: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """Decode the multi-resolution encodings."""
         num_levels = len(encodings)
         num_encoders = len(self.dims_encoder)
 
         if num_levels != num_encoders:
             raise ValueError(
-                f"Got encoder output levels={num_levels}, expected levels={num_encoders+1}."
+                f'Got encoder output levels={num_levels}, expected levels={num_encoders+1}.'
             )
 
         # Project features of different encoder dims to the same decoder dim.
@@ -87,9 +76,11 @@ class MultiresConvDecoder(nn.Module):
         features = self.convs[-1](encodings[-1])
         lowres_features = features
         features = self.fusions[-1](features)
+
         for i in range(num_levels - 2, -1, -1):
             features_i = self.convs[i](encodings[i])
             features = self.fusions[i](features, features_i)
+
         return features, lowres_features
 
 
@@ -161,7 +152,7 @@ class FeatureFusionBlock2d(nn.Module):
             bias=True,
         )
 
-        self.skip_add = nn.quantized.FloatFunctional()
+        self.skip_add = torch.ao.nn.quantized.FloatFunctional()
 
     def forward(self, x0: torch.Tensor, x1: torch.Tensor | None = None) -> torch.Tensor:
         """Process and fuse input features."""
