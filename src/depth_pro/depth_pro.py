@@ -72,8 +72,10 @@ def create_backbone_model(
 def create_model_and_transforms(
     config: DepthProConfig = DEFAULT_MONODEPTH_CONFIG_DICT,
     device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-    precision: torch.dtype = torch.float16 if device.type == 'cuda' else torch.float32,
 ) -> Tuple[DepthPro, Compose]:
+    # Determine the precision based on the device here
+    precision = torch.float16 if device.type == 'cuda' else torch.float32
+
     """Create a DepthPro model and load weights from `config.checkpoint_uri`.
 
     Args:
