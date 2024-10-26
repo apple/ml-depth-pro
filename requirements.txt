@@ -1,0 +1,6 @@
+torch
+torchvision
+timm
+numpy<2
+pillow_heif
+matplotlib
