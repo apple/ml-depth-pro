@@ -169,6 +169,10 @@ class FeatureFusionBlock2d(nn.Module):
 
         if x1 is not None:
             res = self.resnet1(x1)
+            _, _, Wx, Hx = x.shape
+            _, _, Wres, Hres = res.shape
+            if Wx != Wres or Hx != Hres:
+                x = nn.functional.interpolate(x, size=(Wres, Hres), mode="bilinear", align_corners=False)
             x = self.skip_add.add(x, res)
 
         x = self.resnet2(x)

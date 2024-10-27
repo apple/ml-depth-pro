@@ -35,6 +35,9 @@ class DepthProConfig:
     fov_encoder_preset: Optional[ViTPreset] = None
     use_fov_head: bool = True
 
+    encoder_scale_size: tuple[int] = ()
+    head_paddings: tuple[int] = ()
+    fov_head_paddings: tuple[int] = ()
 
 DEFAULT_MONODEPTH_CONFIG_DICT = DepthProConfig(
     patch_encoder_preset="dinov2l16_384",
