@@ -29,13 +29,11 @@ with open(output_file, "r", encoding="utf-8") as infile:
 
 print(f"Total: {cnt}, Valid: {valid_cnt}")
 
-# Generate json
-input_file = output_file
 output_json = "/dataset/sharedir/research/Hypersim/valid_files.json"
 
 json_data = []
 
-with open(input_file, "r", encoding="utf-8") as infile:
+with open(output_file, "r", encoding="utf-8") as infile:
     for idx, line in enumerate(infile):
         # 获取图像路径
         img_path = line.strip()
