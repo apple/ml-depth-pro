@@ -55,5 +55,3 @@ if __name__ == "__main__":
     print(len(dataset))
     for id, (image, depth) in enumerate(dataset):
         print(image.shape, depth.shape)
-        if id > 10:
-            break
