@@ -49,7 +49,12 @@ with open(output_file, "r", encoding="utf-8") as infile:
         # 添加到 JSON 数据列表
         json_data.append(entry)
 
-# 写入到 JSON 文件
-with open(output_json, "w", encoding="utf-8") as outfile:
-    json.dump(json_data, outfile)
-    outfile.write("\n")
+# # 写入到 JSON 文件
+# with open(output_json, "w", encoding="utf-8") as outfile:
+#     json.dump(json_data, outfile)
+#     outfile.write("\n")
+# Dump every element in the JSON data with a \n
+with open(output_json, 'w') as f:
+    for entry in json_data:
+        json.dump(entry, f)
+        f.write('\n')
