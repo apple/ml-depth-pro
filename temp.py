@@ -50,7 +50,7 @@ with open(output_file, "r", encoding="utf-8") as infile:
         json_data.append(entry)
 
 # Dump every element in the JSON data with a \n
-if not os.path.exists(output_json)
+if not os.path.exists(output_json):
     with open(output_json, 'w') as f:
         for entry in json_data:
             json.dump(entry, f)
