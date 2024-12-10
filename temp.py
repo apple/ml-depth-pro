@@ -1,3 +1,4 @@
+import json
 import os
 
 input_file = "/dataset/sharedir/research/Hypersim/new_final_valid_files.txt"
@@ -27,3 +28,30 @@ with open(output_file, "r", encoding="utf-8") as infile:
             valid_cnt += 1
 
 print(f"Total: {cnt}, Valid: {valid_cnt}")
+
+# Generate json
+input_file = output_file
+output_json = "/dataset/sharedir/research/Hypersim/valid_files.json"
+
+json_data = []
+
+with open(input_file, "r", encoding="utf-8") as infile:
+    for idx, line in enumerate(infile):
+        # 获取图像路径
+        img_path = line.strip()
+        # 生成深度图路径
+        depth_path = img_path.replace("_final_hdf5", "_geometry_hdf5", 1).replace(".color.hdf5", ".depth_meters.hdf5",
+                                                                                  1)
+        # 创建字典对象
+        entry = {
+            "id": idx + 1,  # ID 升序，从 1 开始
+            "img_path": img_path,
+            "depth_path": depth_path
+        }
+        # 添加到 JSON 数据列表
+        json_data.append(entry)
+
+# 写入到 JSON 文件
+with open(output_file, "w", encoding="utf-8") as outfile:
+    json.dump(json_data, outfile)
+    outfile.write("\n")
