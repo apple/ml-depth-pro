@@ -49,12 +49,19 @@ with open(output_file, "r", encoding="utf-8") as infile:
         # 添加到 JSON 数据列表
         json_data.append(entry)
 
-# # 写入到 JSON 文件
-# with open(output_json, "w", encoding="utf-8") as outfile:
-#     json.dump(json_data, outfile)
-#     outfile.write("\n")
 # Dump every element in the JSON data with a \n
-with open(output_json, 'w') as f:
-    for entry in json_data:
-        json.dump(entry, f)
-        f.write('\n')
+if not os.path.exists(output_json)
+    with open(output_json, 'w') as f:
+        for entry in json_data:
+            json.dump(entry, f)
+            f.write('\n')
+
+# Check if every line exists in the output json
+valid_cnt = 0
+with open(output_json, "r", encoding="utf-8") as infile:
+    for line in infile:
+        entry = json.loads(line)
+        if not os.path.exists(entry["img_path"]) or not os.path.exists(entry["depth_path"]):
+            print(f"File not found: {entry}")
+        else:
+            valid_cnt += 1
