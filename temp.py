@@ -65,3 +65,5 @@ with open(output_json, "r", encoding="utf-8") as infile:
             print(f"File not found: {entry}")
         else:
             valid_cnt += 1
+
+print(f"Total: {cnt}, Valid: {valid_cnt}")
