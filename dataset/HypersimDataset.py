@@ -52,6 +52,6 @@ class HypersimDataset(BaseDataset):
 
 if __name__ == "__main__":
     dataset = HypersimDataset()
-    print(len(dataset))
+    print(f"Dataset length: {len(dataset)}")
     for id, (image, depth) in enumerate(dataset):
-        print(image.shape, depth.shape)
+        print(f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}")
