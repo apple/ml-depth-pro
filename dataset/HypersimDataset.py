@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset
 from torchvision import transforms
-import BaseDataset
+from dataset.BaseDataset import BaseDataset
 from dataset.utils import get_hdf5_array
 
 
