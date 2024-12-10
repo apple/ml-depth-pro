@@ -1,0 +1,2 @@
+[console_scripts]
+depth-pro-run = depth_pro.cli:run_main

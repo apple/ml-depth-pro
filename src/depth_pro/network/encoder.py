@@ -98,6 +98,7 @@ class DepthProEncoder(nn.Module):
             dim_out=decoder_features,
             upsample_layers=3,
         )
+
         self.upsample_latent1 = _create_project_upsample_block(
             dim_in=patch_encoder_embed_dim, dim_out=self.dims_encoder[0], upsample_layers=2
         )
@@ -120,6 +121,7 @@ class DepthProEncoder(nn.Module):
             padding=0,
             bias=True,
         )
+
         self.fuse_lowres = nn.Conv2d(
             in_channels=(self.dims_encoder[3] + self.dims_encoder[3]),
             out_channels=self.dims_encoder[3],

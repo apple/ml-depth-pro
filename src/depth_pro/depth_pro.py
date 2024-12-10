@@ -47,7 +47,7 @@ DEFAULT_MONODEPTH_CONFIG_DICT = DepthProConfig(
 
 
 def create_backbone_model(
-    preset: ViTPreset
+        preset: ViTPreset
 ) -> Tuple[nn.Module, ViTPreset]:
     """Create and load a backbone model given a config.
 
@@ -70,9 +70,9 @@ def create_backbone_model(
 
 
 def create_model_and_transforms(
-    config: DepthProConfig = DEFAULT_MONODEPTH_CONFIG_DICT,
-    device: torch.device = torch.device("cpu"),
-    precision: torch.dtype = torch.float32,
+        config: DepthProConfig = DEFAULT_MONODEPTH_CONFIG_DICT,
+        device: torch.device = torch.device("cpu"),
+        precision: torch.dtype = torch.float32,
 ) -> Tuple[DepthPro, Compose]:
     """Create a DepthPro model and load weights from `config.checkpoint_uri`.
 
@@ -155,12 +155,12 @@ class DepthPro(nn.Module):
     """DepthPro network."""
 
     def __init__(
-        self,
-        encoder: DepthProEncoder,
-        decoder: MultiresConvDecoder,
-        last_dims: tuple[int, int],
-        use_fov_head: bool = True,
-        fov_encoder: Optional[nn.Module] = None,
+            self,
+            encoder: DepthProEncoder,
+            decoder: MultiresConvDecoder,
+            last_dims: tuple[int, int],
+            use_fov_head: bool = True,
+            fov_encoder: Optional[nn.Module] = None,
     ):
         """Initialize DepthPro.
 
@@ -177,7 +177,7 @@ class DepthPro(nn.Module):
 
         self.encoder = encoder
         self.decoder = decoder
-    
+
         dim_decoder = decoder.dim_decoder
         self.head = nn.Sequential(
             nn.Conv2d(
@@ -227,6 +227,7 @@ class DepthPro(nn.Module):
             The canonical inverse depth map [m] and the optional estimated field of view [deg].
 
         """
+
         _, _, H, W = x.shape
         assert H == self.img_size and W == self.img_size
 
@@ -242,10 +243,10 @@ class DepthPro(nn.Module):
 
     @torch.no_grad()
     def infer(
-        self,
-        x: torch.Tensor,
-        f_px: Optional[Union[float, torch.Tensor]] = None,
-        interpolation_mode="bilinear",
+            self,
+            x: torch.Tensor,
+            f_px: Optional[Union[float, torch.Tensor]] = None,
+            interpolation_mode="bilinear",
     ) -> Mapping[str, torch.Tensor]:
         """Infer depth and fov for a given image.
 
@@ -281,7 +282,7 @@ class DepthPro(nn.Module):
         canonical_inverse_depth, fov_deg = self.forward(x)
         if f_px is None:
             f_px = 0.5 * W / torch.tan(0.5 * torch.deg2rad(fov_deg.to(torch.float)))
-        
+
         inverse_depth = canonical_inverse_depth * (W / f_px)
         f_px = f_px.squeeze()
 
