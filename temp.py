@@ -40,7 +40,7 @@ with open(output_file, "r", encoding="utf-8") as infile:
         # 生成深度图路径
         depth_path = img_path.replace("_final_hdf5", "_geometry_hdf5", 1).replace(".color.hdf5", ".depth_meters.hdf5",
                                                                                   1)
-        # 创建字典对象
+
         entry = {
             "id": idx + 1,  # ID 升序，从 1 开始
             "img_path": img_path,
@@ -50,6 +50,6 @@ with open(output_file, "r", encoding="utf-8") as infile:
         json_data.append(entry)
 
 # 写入到 JSON 文件
-with open(output_file, "w", encoding="utf-8") as outfile:
+with open(output_json, "w", encoding="utf-8") as outfile:
     json.dump(json_data, outfile)
     outfile.write("\n")
