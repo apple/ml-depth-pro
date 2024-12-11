@@ -12,11 +12,12 @@ from dataset.utils import get_hdf5_array
 
 class HypersimDataset(BaseDataset):
     def __init__(self):
-        meta_json = "/dataset/sharedir/research/Hypersim/valid_files.json"
         super().__init__()
+        meta_json = "/dataset/sharedir/research/Hypersim/valid_files.json"
+        self.meta_json = meta_json
         self.image_paths = []
         self.depth_paths = []
-        self.depth_threshold = 200
+        self.depth_threshold = 200.
         with open(meta_json, "r", encoding="utf-8") as infile:
             for line in infile:
                 entry = json.loads(line)
