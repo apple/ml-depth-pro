@@ -40,9 +40,8 @@ class SintelDataset(BaseDataset):
         height = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
         size = width * height
         depth = np.fromfile(depth_info, dtype=np.float32, count=-1).reshape((height, width))
+        depth = np.clip(depth, 0.0, self.depth_threshold)
 
-        print(depth.shape)
-        print(f"Range of image and depth before normalization: {image.min(), image.max()}, {depth.min(), depth.max()}")
         return image, depth
 
     def __getitem__(self, idx):
