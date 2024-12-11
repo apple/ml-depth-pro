@@ -19,6 +19,8 @@ with open(meta_json, "r", encoding="utf-8") as infile:
         image_paths.append(entry["img_path"])
         depth_paths.append(entry["depth_path"])
 
+print(f"Total images: {len(image_paths)}, Total depths: {len(depth_paths)}")
+
 for id in range(len(image_paths)):
     # Load and preprocess an image.
     image_path = image_paths[id]
