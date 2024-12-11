@@ -7,13 +7,15 @@ from matplotlib import pyplot as plt
 
 import src.depth_pro.depth_pro as depth_pro
 from dataset.HypersimDataset import HypersimDataset
+from dataset.SintelDataset import SintelDataset
 from dataset.utils import get_hdf5_array
 
 # Load model and preprocessing transform
 model, transform = depth_pro.create_model_and_transforms()
 model.eval()
 
-dataset = HypersimDataset()
+# dataset = HypersimDataset()
+dataset = SintelDataset()
 meta_json = dataset.meta_json
 image_paths = []
 depth_paths = []
