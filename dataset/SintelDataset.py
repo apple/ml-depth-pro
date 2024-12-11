@@ -31,7 +31,7 @@ class SintelDataset(BaseDataset):
 
     def preproess(self, image_path, depth_path):
         image = cv2.imread(image_path)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = image / 255.0
 
         depth_info = open(depth_path, 'rb')
