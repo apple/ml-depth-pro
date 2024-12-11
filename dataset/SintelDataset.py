@@ -40,7 +40,7 @@ class SintelDataset(BaseDataset):
         height = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
         size = width * height
         depth = np.fromfile(depth_info, dtype=np.float32, count=-1).reshape((height, width))
-        depth = np.clip(depth, 0.0, self.depth_threshold)
+        # depth = np.clip(depth, 0.0, self.depth_threshold)
 
         return image, depth
 
