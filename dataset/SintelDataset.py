@@ -66,7 +66,6 @@ def convert_image_to_depth_path(image_path):
         "/image/training/final/",
         "/depth/training/depth/"
     )
-    # 修改文件扩展名为 .dpt
     new_path = os.path.splitext(new_path)[0] + ".dpt"
     return new_path
 
