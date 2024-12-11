@@ -47,7 +47,7 @@ class HypersimDataset(BaseDataset):
         to_tensor = transforms.ToTensor()
         image = to_tensor(image_np)
         depth = to_tensor(depth_np)
-
+        print(f"Range of image: {torch.min(image)}, {torch.max(image)}")
         return image, depth
 
 
