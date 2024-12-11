@@ -30,15 +30,14 @@ for id, (image, depth_gt) in enumerate(dataset):
     print(f"prediction shape: {prediction['depth'].shape}")
     depth = prediction["depth"]  # Depth in [m].
     predict_depth_np = depth.cpu().numpy()
-    print(f"Img,prediction,gt shape: {image_numpy.shape},{predict_depth_np.shape},{depth_gt.shape}")
+    # print(f"Img,prediction,gt shape: {image_numpy.shape},{predict_depth_np.shape},{depth_gt.shape}")
     focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 
     # Normalize the depth maps for visualization
-    predict_depth_vis = (predict_depth_np - np.min(predict_depth_np)) / (
-            np.max(predict_depth_np) - np.min(predict_depth_np))
+    predict_depth_vis = predict_depth_np
     print(depth_gt.shape)
     depth_gt = depth_gt.cpu().numpy().transpose(1, 2, 0)
-    depth_gt_vis = (depth_gt - np.min(depth_gt)) / (np.max(depth_gt) - np.min(depth_gt))
+    depth_gt_vis = depth_gt
 
     # Create the figure and axes
     fig, axes = plt.subplots(1, 3, figsize=(30, 10))
