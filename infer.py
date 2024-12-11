@@ -4,15 +4,16 @@ import os
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
-
+import torch
 import src.depth_pro.depth_pro as depth_pro
 from dataset.HypersimDataset import HypersimDataset
 from dataset.SintelDataset import SintelDataset
 from dataset.utils import get_hdf5_array
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 # Load model and preprocessing transform
 model, transform = depth_pro.create_model_and_transforms()
-model.eval()
+model = model.to(device).eval()
 
 # dataset = HypersimDataset()
 dataset = SintelDataset()
@@ -20,6 +21,7 @@ save_root = "./output/sintel"
 os.makedirs(save_root, exist_ok=True)
 
 for id, (image, depth_gt) in enumerate(dataset):
+    image, depth_gt = image.to(device), depth_gt.to(device)
     image = image.unsqueeze(0)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
