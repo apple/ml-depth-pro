@@ -40,7 +40,7 @@ for id in range(len(image_paths)):
     print(f"Image shape: {image.shape}")
 
     image = image.unsqueeze(0)
-    image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
+    image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0) * 0.5 + 0.5
 
     print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
