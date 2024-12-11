@@ -26,7 +26,7 @@ for id, (image, depth) in enumerate(dataset):
     print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
     # Run inference.
-    prediction = model.infer(image, f_px=f_px)
+    prediction = model.infer(image, f_px=None)
     print(f"prediction shape: {prediction['depth'].shape}")
     depth = prediction["depth"]  # Depth in [m].
     predict_depth_np = depth.cpu().numpy()
