@@ -33,6 +33,8 @@ for id in range(len(image_paths)):
     depth_path = depth_paths[id]
     image = get_hdf5_array(image_path)
     depth_gt = get_hdf5_array(depth_path)
+    image = np.clip(image, 0.0, 1.0)
+    depth_gt = np.clip(depth_gt, 0.0, 200.0)
     f_px = None
     image = transform(image)
     print(f"Image shape: {image.shape}")
