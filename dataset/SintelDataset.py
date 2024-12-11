@@ -35,7 +35,7 @@ class SintelDataset(BaseDataset):
         image = image / 255.0
 
         depth_info = open(depth_path, 'rb')
-        check = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
+        check = np.fromfile(depth_info, dtype=np.float32, count=1)[0]
         width = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
         height = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
         size = width * height
