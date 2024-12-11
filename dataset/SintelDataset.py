@@ -33,7 +33,7 @@ class SintelDataset(BaseDataset):
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = image / 255.0
-        depth = np.fromfile(depth_path)
+        depth = cv2.imread(depth_path)
         depth = depth.clip(0.0, self.depth_threshold)
         print(depth.shape)
         print(f"Range of image and depth before normalization: {image.min(), image.max()}, {depth.min(), depth.max()}")
