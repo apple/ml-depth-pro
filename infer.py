@@ -19,7 +19,7 @@ dataset = SintelDataset()
 save_root = "./output/sintel"
 os.makedirs(save_root, exist_ok=True)
 
-for id, (image, depth) in enumerate(dataset):
+for id, (image, depth_gt) in enumerate(dataset):
     image = image.unsqueeze(0)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
