@@ -29,7 +29,7 @@ for id in range(len(image_paths)):
     depth_gt = get_hdf5_array(depth_path)
     f_px = None
     image = transform(image)
-
+    print(f"Image shape: {image.shape}")
     # Run inference.
     prediction = model.infer(image, f_px=f_px)
     print(f"prediction shape: {prediction['depth'].shape}")
