@@ -30,6 +30,7 @@ for id in range(len(image_paths)):
     f_px = None
     image = transform(image)
     print(f"Image shape: {image.shape}")
+    image = image.unsqueeze(0)
     # Run inference.
     prediction = model.infer(image, f_px=f_px)
     print(f"prediction shape: {prediction['depth'].shape}")
