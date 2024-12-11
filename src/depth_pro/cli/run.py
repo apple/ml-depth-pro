@@ -42,12 +42,12 @@ def run(args):
     )
     model.eval()
 
-    image_paths = [args.image_path]
-    if args.image_path.is_dir():
-        image_paths = args.image_path.glob("**/*")
-        relative_path = args.image_path
+    image_paths = [args.image_paths]
+    if args.image_paths.is_dir():
+        image_paths = args.image_paths.glob("**/*")
+        relative_path = args.image_paths
     else:
-        relative_path = args.image_path.parent
+        relative_path = args.image_paths.parent
 
     if not args.skip_display:
         plt.ion()
