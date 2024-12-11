@@ -1,6 +1,6 @@
 import json
 import os
-
+import pickle
 import numpy as np
 import torch
 import torch.nn as nn
@@ -33,8 +33,10 @@ class SintelDataset(BaseDataset):
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = image / 255.0
-        depth = cv2.imread(depth_path)
-        depth = depth.clip(0.0, self.depth_threshold)
+        depth = None
+        with open(depth_path, 'rb') as f:
+            depth = pickle.load(f)
+        
         print(depth.shape)
         print(f"Range of image and depth before normalization: {image.min(), image.max()}, {depth.min(), depth.max()}")
         return image, depth
