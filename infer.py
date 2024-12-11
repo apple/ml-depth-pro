@@ -1,7 +1,7 @@
 import json
 
 from PIL import Image
-import depth_pro
+import src.depth_pro.depth_pro as depth_pro
 from dataset.HypersimDataset import HypersimDataset
 from dataset.utils import get_hdf5_array
 
