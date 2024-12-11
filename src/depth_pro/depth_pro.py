@@ -132,7 +132,7 @@ def create_model_and_transforms(
     )
 
     if config.checkpoint_uri is not None:
-        state_dict = torch.load(config.checkpoint_uri, map_location="cpu")
+        state_dict = torch.load(config.checkpoint_uri, map_location="cpu", weights_only=True)
         missing_keys, unexpected_keys = model.load_state_dict(
             state_dict=state_dict, strict=True
         )
