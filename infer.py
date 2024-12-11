@@ -16,32 +16,10 @@ model.eval()
 
 # dataset = HypersimDataset()
 dataset = SintelDataset()
-meta_json = dataset.meta_json
-image_paths = []
-depth_paths = []
-with open(meta_json, "r", encoding="utf-8") as infile:
-    for line in infile:
-        entry = json.loads(line)
-        image_paths.append(entry["img_path"])
-        depth_paths.append(entry["depth_path"])
-
-print(f"Total images: {len(image_paths)}, Total depths: {len(depth_paths)}")
-
 save_root = "./output/sintel"
 os.makedirs(save_root, exist_ok=True)
 
-for id in range(len(image_paths)):
-    # Load and preprocess an image.
-    image_path = image_paths[id]
-    depth_path = depth_paths[id]
-    image = get_hdf5_array(image_path)
-    depth_gt = get_hdf5_array(depth_path)
-    image = np.clip(image, 0.0, 1.0)
-    depth_gt = np.clip(depth_gt, 0.0, 200.0)
-    f_px = None
-    image = transform(image)
-    print(f"Image shape: {image.shape}")
-
+for id, (image, depth) in enumerate(dataset):
     image = image.unsqueeze(0)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
