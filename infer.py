@@ -34,6 +34,8 @@ for id in range(len(image_paths)):
     # Run inference.
     prediction = model.infer(image, f_px=f_px)
     print(f"prediction shape: {prediction['depth'].shape}")
-    depth = prediction["depth"]  # Depth in [m].
+    depth = prediction["depth"].unsqueeze(0)  # Depth in [m].
     predict_depth_np = depth.cpu().numpy().transpose(1, 2, 0)
+    image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
+    print(f"Img,prediction,gt shape: {image_numpy.shape},{predict_depth_np.shape},{depth_gt.shape}")
     focallength_px = prediction["focallength_px"]  # Focal length in pixels.
