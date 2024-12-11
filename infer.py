@@ -28,7 +28,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
     # Run inference.
-    prediction = model.infer((image - 0.5) * 2, f_px=None)
+    prediction = model.infer(image, f_px=None)
     print(f"prediction shape: {prediction['depth'].shape}")
     depth = prediction["depth"]  # Depth in [m].
     predict_depth_np = depth.cpu().numpy()
@@ -50,12 +50,12 @@ for id, (image, depth_gt) in enumerate(dataset):
     axes[0].axis("off")
 
     # Plot predicted depth
-    axes[1].imshow(predict_depth_vis.squeeze(), cmap="viridis")
+    axes[1].imshow(predict_depth_vis, cmap="viridis")
     axes[1].set_title("Predicted Depth")
     axes[1].axis("off")
 
     # Plot ground truth depth
-    axes[2].imshow(depth_gt_vis.squeeze(), cmap="viridis")
+    axes[2].imshow(depth_gt_vis, cmap="viridis")
     axes[2].set_title("Ground Truth Depth")
     axes[2].axis("off")
 
