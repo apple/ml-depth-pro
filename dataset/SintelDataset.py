@@ -79,6 +79,7 @@ def get_meta():
                 "depth_path": depth_path
             }
             idx += 1
+            print("Saving to meta data:", entry)
             with open(meta_json, 'a') as f:
                 json.dump(entry, f)
                 f.write('\n')
