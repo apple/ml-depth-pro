@@ -30,7 +30,9 @@ class HypersimDataset(BaseDataset):
     def preproess(self, image_path, depth_path):
         image = get_hdf5_array(image_path)
         depth = get_hdf5_array(depth_path)
+        print(f"range of image: {np.min(image), np.max(image)}")
         image = np.clip(image, 0.0, 1.0)
+        print(f"Range of image after clipping: {np.min(image), np.max(image)}")
         depth = np.clip(depth, 0.0, self.depth_threshold)
         return image, depth
 
