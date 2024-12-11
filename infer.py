@@ -36,7 +36,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     # Normalize the depth maps for visualization
     predict_depth_vis = predict_depth_np
     print(depth_gt.shape)
-    depth_gt = depth_gt.cpu().numpy().transpose(1, 2, 0)
+    depth_gt = depth_gt.squeeze().cpu().numpy()
     depth_gt_vis = depth_gt
 
     # Create the figure and axes
