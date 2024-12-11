@@ -33,10 +33,13 @@ class SintelDataset(BaseDataset):
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = image / 255.0
-        depth = None
-        with open(depth_path, 'rb') as f:
-            depth = pickle.load(f)
-        
+
+        depth_info = open(depth_path, 'rb')
+        width = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
+        height = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
+        size = width * height
+        depth = np.fromfile(depth_info, dtype=np.float32, count=-1).reshape((height, width))
+
         print(depth.shape)
         print(f"Range of image and depth before normalization: {image.min(), image.max()}, {depth.min(), depth.max()}")
         return image, depth
