@@ -27,7 +27,8 @@ with open(meta_json, "r", encoding="utf-8") as infile:
 
 print(f"Total images: {len(image_paths)}, Total depths: {len(depth_paths)}")
 
-os.makedirs("./output", exist_ok=True)
+save_root = "./output/sintel"
+os.makedirs(save_root, exist_ok=True)
 
 for id in range(len(image_paths)):
     # Load and preprocess an image.
@@ -78,7 +79,7 @@ for id in range(len(image_paths)):
     axes[2].axis("off")
 
     # Save and show the figure
-    output_path = os.path.join("./output", f"{id}.png")
+    output_path = os.path.join(save_root, f"{id}.png")
     plt.savefig(output_path, bbox_inches="tight")
     plt.close(fig)
 
