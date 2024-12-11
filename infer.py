@@ -36,15 +36,18 @@ for id in range(len(image_paths)):
     f_px = None
     image = transform(image)
     print(f"Image shape: {image.shape}")
+
     image = image.unsqueeze(0)
+    image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
+
+    print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
+
     # Run inference.
     prediction = model.infer(image, f_px=f_px)
     print(f"prediction shape: {prediction['depth'].shape}")
     depth = prediction["depth"]  # Depth in [m].
     predict_depth_np = depth.cpu().numpy()
-    image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
     print(f"Img,prediction,gt shape: {image_numpy.shape},{predict_depth_np.shape},{depth_gt.shape}")
-    print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
     focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 
     # Normalize the depth maps for visualization
