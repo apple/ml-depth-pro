@@ -9,6 +9,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from dataset.BaseDataset import BaseDataset
 from dataset.utils import get_hdf5_array
+import cv2
 
 
 class SintelDataset(BaseDataset):
@@ -29,10 +30,11 @@ class SintelDataset(BaseDataset):
         return len(self.image_paths)
 
     def preproess(self, image_path, depth_path):
-        image = get_hdf5_array(image_path)
-        depth = get_hdf5_array(depth_path)
-        image = np.clip(image, 0.0, 1.0)
-        depth = np.clip(depth, 0.0, self.depth_threshold)
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = image / 255.0
+        depth = np.fromfile(depth_path)
+        print(f"Range of image and depth before normalization: {image.min(), image.max()}, {depth.min(), depth.max()}")
         return image, depth
 
     def __getitem__(self, idx):
@@ -62,8 +64,7 @@ def convert_image_to_depth_path(image_path):
     return new_path
 
 
-def get_meta():
-    meta_json = '/dataset/sharedir/research/MPI-Sintel/meta_data.json'
+def get_meta(meta_json):
     image_root = "/dataset/sharedir/research/MPI-Sintel/image/training/final/"
     idx = 0
     for root, dir, files in os.walk(image_root):
@@ -86,7 +87,11 @@ def get_meta():
 
 
 if __name__ == "__main__":
-    get_meta()
+    meta_json = '/dataset/sharedir/research/MPI-Sintel/meta_data.json'
+
+    if not os.path.exists(meta_json):
+        get_meta(meta_json=meta_json)
+
     dataset = SintelDataset()
     print(f"Dataset length: {len(dataset)}")
 
