@@ -53,7 +53,7 @@ for id in range(len(image_paths)):
     depth_gt_vis = (depth_gt - np.min(depth_gt)) / (np.max(depth_gt) - np.min(depth_gt))
 
     # Create the figure and axes
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    fig, axes = plt.subplots(1, 3, figsize=(30, 10))
 
     # Plot input image
     axes[0].imshow(image_numpy)
