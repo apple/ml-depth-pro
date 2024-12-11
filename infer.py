@@ -55,7 +55,7 @@ for id in range(len(image_paths)):
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
     # Plot input image
-    axes[0].imshow(image_numpy)
+    axes[0].imshow(image_numpy / 255.)
     axes[0].set_title("Input Image")
     axes[0].axis("off")
 
