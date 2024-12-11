@@ -44,6 +44,7 @@ for id in range(len(image_paths)):
     predict_depth_np = depth.cpu().numpy()
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
     print(f"Img,prediction,gt shape: {image_numpy.shape},{predict_depth_np.shape},{depth_gt.shape}")
+    print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
     focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 
     # Normalize the depth maps for visualization
@@ -55,7 +56,7 @@ for id in range(len(image_paths)):
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
     # Plot input image
-    axes[0].imshow(image_numpy / 255.)
+    axes[0].imshow(image_numpy)
     axes[0].set_title("Input Image")
     axes[0].axis("off")
 
