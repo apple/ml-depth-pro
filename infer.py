@@ -42,7 +42,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     fig, axes = plt.subplots(1, 3, figsize=(30, 10))
 
     # Plot input image
-    axes[0].imshow(image_numpy * 0.5 + 0.5)
+    axes[0].imshow(image_numpy)
     axes[0].set_title("Input Image")
     axes[0].axis("off")
 
