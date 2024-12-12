@@ -15,9 +15,17 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model, transform = depth_pro.create_model_and_transforms()
 model = model.to(device).eval()
 
-# dataset = HypersimDataset()
-dataset = SintelDataset()
-save_root = "./output/sintel"
+
+def get_dataset(dataset_name):
+    if dataset_name == "Hypersim":
+        return HypersimDataset()
+    elif dataset_name == "Sintel":
+        return SintelDataset()
+
+
+dataset_name = "Hypersim"
+dataset = get_dataset(dataset_name)
+save_root = os.path.join('./output', dataset_name)
 os.makedirs(save_root, exist_ok=True)
 
 for id, (image, depth_gt) in enumerate(dataset):
