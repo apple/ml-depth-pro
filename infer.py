@@ -36,7 +36,7 @@ def get_dataset(dataset_name):
 dataset_name = "Sintel"
 # dataset_name = "Hypersim"
 dataset = get_dataset(dataset_name)
-save_root = os.path.join('./depth-pro', dataset_name)
+save_root = os.path.join('./vis/depth-pro', dataset_name)
 os.makedirs(save_root, exist_ok=True)
 
 for id, (image, depth_gt) in enumerate(dataset):
