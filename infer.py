@@ -23,7 +23,8 @@ def get_dataset(dataset_name):
         return SintelDataset()
 
 
-dataset_name = "Sintel"
+# dataset_name = "Sintel"
+dataset_name = "Hypersim"
 dataset = get_dataset(dataset_name)
 save_root = os.path.join('./output', dataset_name)
 os.makedirs(save_root, exist_ok=True)
