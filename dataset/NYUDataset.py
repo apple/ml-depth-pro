@@ -42,7 +42,7 @@ class SintelDataset(BaseDataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = image / 255.0
 
-        depth = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED).astype(np.float32)
+        depth = cv2.imread(depth_path, cv2.IMREAD_GRAYSCALE)
         # depth = np.clip(depth, 0.0, self.depth_threshold)
 
         return image, depth
