@@ -41,7 +41,11 @@ if __name__ == "__main__":
             predict_depth = predict_depth.astype(np.float32) / 255.0
             images.append(predict_depth)
             titles.append(_model_name)
-        if None in images:
+        flag = 0
+        for image in images:
+            if image is None:
+                flag = 1
+        if flag == 1:
             continue
         # 创建一个水平拼接的图
         fig, axes = plt.subplots(1, len(images), figsize=(30, 10))
