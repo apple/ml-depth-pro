@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     # dataset_name = "Sintel"
     # dataset_names = ['NYUv2']
-    dataset_names = ['NYUv2', 'Sintel']
+    dataset_names = ['Sintel']
     res_root = r'/dataset/vfayezzhang/test/depth-pro/infer/vis/'
     for dataset_name in dataset_names:
         save_root = os.path.join(res_root, 'combine', dataset_name)
