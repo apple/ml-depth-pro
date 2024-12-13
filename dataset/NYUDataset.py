@@ -34,12 +34,7 @@ class SintelDataset(BaseDataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = image / 255.0
 
-        depth_info = open(depth_path, 'rb')
-        check = np.fromfile(depth_info, dtype=np.float32, count=1)[0]
-        width = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
-        height = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
-        size = width * height
-        depth = np.fromfile(depth_info, dtype=np.float32, count=-1).reshape((height, width))
+        depth = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED).astype(np.float32)
         # depth = np.clip(depth, 0.0, self.depth_threshold)
 
         return image, depth
@@ -62,18 +57,15 @@ class SintelDataset(BaseDataset):
 
 def convert_image_to_depth_path(image_path):
     # 替换路径中的特定部分
-    new_path = image_path.replace(
-        "/image/training/final/",
-        "/depth/training/depth/"
-    )
-    new_path = os.path.splitext(new_path)[0] + ".dpt"
+    new_path = image_path.replace("image", "depth")
     return new_path
 
 
-def get_meta(meta_json):
-    image_root = "/dataset/sharedir/research/MPI-Sintel/image/training/final/"
+def get_meta(data_root, meta_json):
     idx = 0
-    for root, dir, files in os.walk(image_root):
+    for root, dir, files in os.walk(data_root):
+        if dir != "image":
+            continue
         for file in files:
             image_path = os.path.join(root, file)
             depth_path = convert_image_to_depth_path(image_path)
@@ -93,13 +85,16 @@ def get_meta(meta_json):
 
 
 if __name__ == "__main__":
-    meta_json = '/dataset/sharedir/research/MPI-Sintel/meta_data.json'
+    data_root = "/dataset/vfayezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYUdata/"
+
+    meta_json = '/dataset/vfaezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYUdata/meta_data.json'
 
     if not os.path.exists(meta_json):
-        get_meta(meta_json=meta_json)
+        get_meta(data_root=data_root, meta_json=meta_json)
 
     dataset = SintelDataset()
     print(f"Dataset length: {len(dataset)}")
 
     for id, (image, depth) in enumerate(dataset):
-        print(f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+        print(
+            f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}, Image range: {image.min()} - {image.max()}, Depth range: {depth.min()} - {depth.max()}")
