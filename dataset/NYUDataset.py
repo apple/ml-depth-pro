@@ -32,6 +32,12 @@ class SintelDataset(BaseDataset):
         return len(self.image_paths)
 
     def preproess(self, image_path, depth_path):
+        if not os.path.exists(image_path):
+            print(f"File not found: {image_path}")
+            return None, None
+        if not os.path.exists(depth_path):
+            print(f"File not found: {depth_path}")
+            return None, None
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = image / 255.0
