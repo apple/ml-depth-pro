@@ -21,8 +21,9 @@ def get_dataset(dataset_name):
 
 if __name__ == "__main__":
     dataset_name = "Sintel"
-    save_root = r'/dataset/vfayezzhang/test/depth-pro/infer/vis/'
-    os.makedirs(save_root, exist_ok=True)
+    res_root = r'/dataset/vfayezzhang/test/depth-pro/infer/vis/'
+    save_root = os.path.join(res_root, 'combine', dataset_name)
+    os.makedirs(res_root, exist_ok=True)
     dataset = get_dataset(dataset_name)
     model_names = ['marigold', 'dav2', 'depth-pro']
 
@@ -34,7 +35,7 @@ if __name__ == "__main__":
         images = [image_numpy, depth_gt_np]
         titles = ["Origin Image", "Ground Truth"]
         for _model_name in model_names:
-            predict_depth_path = os.path.join(save_root, _model_name, dataset_name, f"{id}.png")
+            predict_depth_path = os.path.join(res_root, _model_name, dataset_name, f"{id}.png")
             predict_depth = cv2.imread(predict_depth_path, cv2.IMREAD_GRAYSCALE)
             images.append(predict_depth)
             titles.append(_model_name)
@@ -49,4 +50,5 @@ if __name__ == "__main__":
 
         # 调整布局
         plt.tight_layout()
-        plt.savefig(os.path.join(save_root, 'combine', f"{id}.png"))
+
+        plt.savefig(os.path.join(save_root, f"{id}.png"))
