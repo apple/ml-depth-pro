@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 import torch
 import src.depth_pro.depth_pro as depth_pro
 from dataset.HypersimDataset import HypersimDataset
+from dataset.NYUDataset import NYUDataset
 from dataset.SintelDataset import SintelDataset
 from dataset.utils import get_hdf5_array
 
@@ -31,10 +32,13 @@ def get_dataset(dataset_name):
         return HypersimDataset()
     elif dataset_name == "Sintel":
         return SintelDataset()
+    elif dataset_name == "NYUv2":
+        return NYUDataset()
 
 
-dataset_name = "Sintel"
+# dataset_name = "Sintel"
 # dataset_name = "Hypersim"
+dataset_name = "NYUv2"
 dataset = get_dataset(dataset_name)
 save_root = os.path.join('./vis/depth-pro', dataset_name)
 os.makedirs(save_root, exist_ok=True)
