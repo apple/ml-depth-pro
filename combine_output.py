@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
             for i, ax in enumerate(axes.flatten()):
                 if i < len(images):
-                    ax.imshow(images[i], cmap='viridis ' if i > 0 else None)
+                    ax.imshow(images[i], cmap='viridis' if i > 0 else None)
                     ax.set_title(titles[i])
                 ax.axis("off")  # Turn off axes for all subplots
 
