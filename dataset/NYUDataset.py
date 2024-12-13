@@ -70,7 +70,8 @@ def get_meta(data_root, meta_json):
             image_path = os.path.join(root, file)
             dir_name = os.path.basename(os.path.dirname(image_path))
             print(f"dir_name: {dir_name}")
-            time.sleep(1)
+            if '/image/' not in dir_name:
+                continue
             depth_path = convert_image_to_depth_path(image_path)
             if (not os.path.exists(image_path)) or (not os.path.exists(depth_path)):
                 print(f"File not found: {image_path}")
@@ -90,7 +91,7 @@ def get_meta(data_root, meta_json):
 if __name__ == "__main__":
     data_root = "/dataset/vfayezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYUdata/"
 
-    meta_json = '/dataset/vfaezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYU_meta_data.json'
+    meta_json = '/dataset/vfayezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYU_meta_data.json'
 
     if not os.path.exists(meta_json):
         get_meta(data_root=data_root, meta_json=meta_json)
