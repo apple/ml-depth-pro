@@ -60,6 +60,7 @@ class SintelDataset(BaseDataset):
 def convert_image_to_depth_path(image_path):
     # 替换路径中的特定部分
     new_path = image_path.replace("image", "depth")
+    new_path = new_path.replace("jpg", "png")
     return new_path
 
 
