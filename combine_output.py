@@ -24,6 +24,7 @@ if __name__ == "__main__":
     res_root = r'/dataset/vfayezzhang/test/depth-pro/infer/vis/'
     save_root = os.path.join(res_root, 'combine', dataset_name)
     os.makedirs(res_root, exist_ok=True)
+    os.makedirs(save_root, exist_ok=True)
     dataset = get_dataset(dataset_name)
     model_names = ['marigold', 'dav2', 'depth-pro']
 
