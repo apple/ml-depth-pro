@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     for id, (image, depth_gt) in enumerate(dataset):
         image_numpy = image.cpu().numpy().transpose(1, 2, 0)
-        depth_gt_np = depth_gt.cpu().numpy()
+        depth_gt_np = depth_gt.squeeze().cpu().numpy()
 
         # 图片列表
         images = [image_numpy, depth_gt_np]
