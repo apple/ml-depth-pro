@@ -73,6 +73,7 @@ def convert_image_to_depth_path(image_path):
 
 def get_meta(data_root, meta_json):
     idx = 0
+    entries = []
     for root, dir, files in os.walk(data_root):
         for file in files:
             image_path = os.path.join(root, file)
@@ -84,20 +85,25 @@ def get_meta(data_root, meta_json):
                 print(f"File not found: {image_path}")
                 continue
             entry = {
-                "id": idx + 1,
                 "img_path": image_path,
                 "depth_path": depth_path
             }
             idx += 1
+            entries.append(entry)
             print("Saving to meta data:", entry)
-            with open(meta_json, 'a') as f:
-                json.dump(entry, f)
-                f.write('\n')
+    entries = sorted(entries, key=lambda x: x['img_path'])
+    with open(meta_json, 'a') as f:
+        for entry in entries:
+            json.dump({
+                "id": idx + 1,
+                "img_path": entry["img_path"],
+                "depth_path": entry["depth_path"]
+            }, f)
+            f.write('\n')
 
 
 if __name__ == "__main__":
     data_root = "/dataset/vfayezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYUdata/"
-
     meta_json = '/dataset/vfayezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYU_meta_data.json'
 
     if not os.path.exists(meta_json):
