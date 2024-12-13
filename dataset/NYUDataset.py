@@ -69,8 +69,7 @@ def get_meta(data_root, meta_json):
         for file in files:
             image_path = os.path.join(root, file)
             dir_name = os.path.basename(os.path.dirname(image_path))
-            print(f"dir_name: {dir_name}")
-            if '/image/' not in dir_name:
+            if 'image' not in dir_name:
                 continue
             depth_path = convert_image_to_depth_path(image_path)
             if (not os.path.exists(image_path)) or (not os.path.exists(depth_path)):
