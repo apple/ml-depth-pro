@@ -35,18 +35,20 @@ if __name__ == "__main__":
         # 图片列表
         images = [image_numpy, depth_gt_np]
         titles = ["Origin Image", "Ground Truth"]
+        flag = False
         for _model_name in model_names:
             predict_depth_path = os.path.join(res_root, _model_name, dataset_name, f"{id}.png")
             predict_depth = cv2.imread(predict_depth_path, cv2.IMREAD_GRAYSCALE)
+            if predict_depth is None:
+                print(f"File not found: {predict_depth_path}")
+                flag = True
+                break
             predict_depth = predict_depth.astype(np.float32) / 255.0
             images.append(predict_depth)
             titles.append(_model_name)
-        flag = 0
-        for image in images:
-            if image is None:
-                flag = 1
-        if flag == 1:
+        if flag:
             continue
+
         # 创建一个水平拼接的图
         fig, axes = plt.subplots(1, len(images), figsize=(30, 10))
 
