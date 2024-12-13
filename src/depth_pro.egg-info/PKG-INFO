@@ -37,10 +37,17 @@ conda activate depth-pro
 pip install -e .
 ```
 
+Install h5py
+```
+pip install h5py
+```
+
 To download pretrained checkpoints follow the code snippet below:
 ```bash
 source get_pretrained_models.sh   # Files will be downloaded to `checkpoints` directory.
 ```
+
+
 
 ### Running from commandline
 
