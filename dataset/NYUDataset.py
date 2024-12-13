@@ -98,3 +98,5 @@ if __name__ == "__main__":
     for id, (image, depth) in enumerate(dataset):
         print(
             f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}, Image range: {image.min()} - {image.max()}, Depth range: {depth.min()} - {depth.max()}")
+        print(f"If depth has nan: {torch.isnan(depth).any()}")
+        print(f"If depth has inf: {torch.isinf(depth).any()}")
