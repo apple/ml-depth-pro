@@ -14,10 +14,10 @@ from dataset.utils import get_hdf5_array
 import cv2
 
 
-class SintelDataset(BaseDataset):
+class NYUDataset(BaseDataset):
     def __init__(self):
         super().__init__()
-        meta_json = "/dataset/sharedir/research/MPI-Sintel/meta_data.json"
+        meta_json = '/dataset/vfayezzhang/dataset/sunrgbd/SUNRGBD/kv1/NYU_meta_data.json'
         self.meta_json = meta_json
         self.image_paths = []
         self.depth_paths = []
@@ -110,7 +110,7 @@ if __name__ == "__main__":
     if not os.path.exists(meta_json):
         get_meta(data_root=data_root, meta_json=meta_json)
 
-    dataset = SintelDataset()
+    dataset = NYUDataset()
     print(f"Dataset length: {len(dataset)}")
 
     for id, (image, depth) in enumerate(dataset):
