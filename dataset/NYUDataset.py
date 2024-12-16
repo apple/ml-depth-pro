@@ -38,14 +38,14 @@ class NYUDataset(BaseDataset):
         if not os.path.exists(depth_path):
             print(f"File not found: {depth_path}")
             return None, None
-        print(f"Read image from {image_path}")
+        # print(f"Read image from {image_path}")
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = image / 255.0
-        print(f"Read depth from {depth_path}")
+        # print(f"Read depth from {depth_path}")
         depth = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED).astype(np.uint16)
         depth = depth.astype(np.float32) / 65535.0
-        print(depth)
+        # print(depth)
         # depth = np.clip(depth, 0.0, self.depth_threshold)
 
         return image, depth
