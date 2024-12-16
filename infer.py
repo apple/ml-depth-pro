@@ -1,6 +1,6 @@
 import json
 import os
-
+import time
 import cv2
 import numpy as np
 from PIL import Image
@@ -42,7 +42,8 @@ dataset_name = "NYUv2"
 dataset = get_dataset(dataset_name)
 save_root = os.path.join('./vis/depth-pro', dataset_name)
 os.makedirs(save_root, exist_ok=True)
-
+cnt = 0
+elapse_time = 0.0
 for id, (image, depth_gt) in enumerate(dataset):
     image, depth_gt = image.to(device), depth_gt.to(device)
     image = image.unsqueeze(0)
@@ -51,7 +52,13 @@ for id, (image, depth_gt) in enumerate(dataset):
     print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
     # Run inference.
+    begin = time.time()
     prediction = model.infer(image * 2 - 1, f_px=None)
+    end = time.time()
+    elapse_time += end - begin
+    cnt += 1
+    if cnt % 50 == 0:
+        print(f"Avg time for {cnt} images: {elapse_time / cnt}")
     print(f"prediction shape: {prediction['depth'].shape}")
     depth = prediction["depth"]  # Depth in [m].
     predict_depth_np = depth.cpu().numpy()
