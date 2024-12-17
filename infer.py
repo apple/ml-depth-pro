@@ -55,7 +55,7 @@ for id, (image, depth_gt) in enumerate(dataset):
 
     # Run inference.
     with torch.no_grad():
-        prediction, fov, consume_time = model(image * 2 - 1)
+        prediction, fov, consume_time = model(image * 2 - 1, test=True)
     elapse_time += consume_time
     cnt += 1
     if cnt % 50 == 0:
