@@ -51,7 +51,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     image = torchvision.transforms.Resize((1536, 1536))(image)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
-    print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
+    # print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
     # Run inference.
     with torch.no_grad():
@@ -60,10 +60,10 @@ for id, (image, depth_gt) in enumerate(dataset):
     cnt += 1
     if cnt % 50 == 0:
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
-    print(f"prediction shape: {prediction.shape}")
+    # print(f"prediction shape: {prediction.shape}")
     depth = 1 / prediction
     predict_depth_np = depth.cpu().numpy()
 
     # Normalize the depth maps for visualization
     predict_depth_vis = predict_depth_np
-    save_single_fig(predict_depth_vis, save_root, id)
+    # save_single_fig(predict_depth_vis, save_root, id)
