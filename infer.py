@@ -58,7 +58,7 @@ for id, (image, depth_gt) in enumerate(dataset):
         prediction, fov, consume_time = model(image * 2 - 1, test=True)
     elapse_time += consume_time
     cnt += 1
-    if cnt % 50 == 0:
+    if cnt % 20 == 0:
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
     # print(f"prediction shape: {prediction.shape}")
     depth = 1 / prediction
