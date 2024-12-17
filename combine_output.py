@@ -37,6 +37,7 @@ if __name__ == "__main__":
         os.makedirs(res_root, exist_ok=True)
         os.makedirs(save_root, exist_ok=True)
         dataset = get_dataset(dataset_name)
+
         model_names = ['marigold', 'dav2', 'depth-pro']
 
         for id, (image, depth_gt) in enumerate(dataset):

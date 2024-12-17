@@ -48,16 +48,14 @@ elapse_time = 0.0
 for id, (image, depth_gt) in enumerate(dataset):
     image, depth_gt = image.to(device), depth_gt.to(device)
     image = image.unsqueeze(0)
-    image = torchvision.transforms.Resize((384, 384))(image)
+    image = torchvision.transforms.Resize((1536, 1536))(image)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
     print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
     # Run inference.
-    begin = time.time()
-    prediction, fov = model(image * 2 - 1)
-    end = time.time()
-    elapse_time += end - begin
+    prediction, fov, consume_time = model(image * 2 - 1)
+    elapse_time += consume_time
     cnt += 1
     if cnt % 50 == 0:
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
