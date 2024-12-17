@@ -41,7 +41,7 @@ def get_dataset(dataset_name):
 # dataset_name = "Hypersim"
 dataset_name = "NYUv2"
 dataset = get_dataset(dataset_name)
-save_root = os.path.join('./vis/depth-pro-t', dataset_name)
+save_root = os.path.join('./vis/depth-pro-test-elapse', dataset_name)
 os.makedirs(save_root, exist_ok=True)
 cnt = 0
 elapse_time = 0.0
