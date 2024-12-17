@@ -3,6 +3,7 @@ import os
 import time
 import cv2
 import numpy as np
+import torchvision.transforms
 from PIL import Image
 from matplotlib import pyplot as plt
 import torch
@@ -47,6 +48,7 @@ elapse_time = 0.0
 for id, (image, depth_gt) in enumerate(dataset):
     image, depth_gt = image.to(device), depth_gt.to(device)
     image = image.unsqueeze(0)
+    image = torchvision.transforms.Resize((384, 384))(image)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
     print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
