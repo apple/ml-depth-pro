@@ -60,11 +60,9 @@ for id, (image, depth_gt) in enumerate(dataset):
     cnt += 1
     if cnt % 50 == 0:
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
-    print(f"prediction shape: {prediction['depth'].shape}")
+    print(f"prediction shape: {prediction.shape}")
     depth = 1 / prediction
     predict_depth_np = depth.cpu().numpy()
-    # print(f"Img,prediction,gt shape: {image_numpy.shape},{predict_depth_np.shape},{depth_gt.shape}")
-    focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 
     # Normalize the depth maps for visualization
     predict_depth_vis = predict_depth_np
