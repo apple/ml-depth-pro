@@ -59,7 +59,7 @@ for id, (image, depth_gt) in enumerate(dataset):
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         begin_time = time.time()
-        prediction, fov, consume_time = model(image * 2 - 1, test=True)
+        prediction, fov = model(image * 2 - 1, test=True)
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         consume_time = time.time() - begin_time
