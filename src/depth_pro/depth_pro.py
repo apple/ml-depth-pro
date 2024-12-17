@@ -232,10 +232,14 @@ class DepthPro(nn.Module):
         _, _, H, W = x.shape
         # print(f"self.img_size: {self.img_size}, H: {H}, W: {W}")
         assert H == self.img_size and W == self.img_size
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
         beg_time = time.time()
         encodings = self.encoder(x)
         features, features_0 = self.decoder(encodings)
         canonical_inverse_depth = self.head(features)
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
         end_time = time.time()
         elapsed_time = end_time - beg_time
         fov_deg = None
