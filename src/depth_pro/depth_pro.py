@@ -230,7 +230,7 @@ class DepthPro(nn.Module):
         """
 
         _, _, H, W = x.shape
-        print(f"self.img_size: {self.img_size}, H: {H}, W: {W}")
+        # print(f"self.img_size: {self.img_size}, H: {H}, W: {W}")
         assert H == self.img_size and W == self.img_size
         beg_time = time.time()
         encodings = self.encoder(x)
