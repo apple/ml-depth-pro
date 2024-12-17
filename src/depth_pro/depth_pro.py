@@ -234,20 +234,16 @@ class DepthPro(nn.Module):
         assert H == self.img_size and W == self.img_size
         if torch.cuda.is_available():
             torch.cuda.synchronize()
-        beg_time = time.time()
         encodings = self.encoder(x)
         features, features_0 = self.decoder(encodings)
         canonical_inverse_depth = self.head(features)
-        if torch.cuda.is_available():
-            torch.cuda.synchronize()
-        end_time = time.time()
-        elapsed_time = end_time - beg_time
+
         fov_deg = None
         if hasattr(self, "fov"):
             fov_deg = self.fov.forward(x, features_0.detach())
 
         if test:
-            return canonical_inverse_depth, fov_deg, elapsed_time
+            return canonical_inverse_depth, fov_deg
         else:
             return canonical_inverse_depth, fov_deg
 

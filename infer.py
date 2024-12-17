@@ -54,8 +54,15 @@ for id, (image, depth_gt) in enumerate(dataset):
     # print(f"Image range: {np.min(image_numpy), np.max(image_numpy)}")
 
     # Run inference.
+    consume_time = 0
     with torch.no_grad():
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        begin_time = time.time()
         prediction, fov, consume_time = model(image * 2 - 1, test=True)
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        consume_time = time.time() - begin_time
     elapse_time += consume_time
     cnt += 1
     if cnt % 20 == 0:
