@@ -40,7 +40,7 @@ def get_dataset(dataset_name):
 # dataset_name = "Hypersim"
 dataset_name = "NYUv2"
 dataset = get_dataset(dataset_name)
-save_root = os.path.join('./vis/depth-pro', dataset_name)
+save_root = os.path.join('./vis/depth-pro-t', dataset_name)
 os.makedirs(save_root, exist_ok=True)
 cnt = 0
 elapse_time = 0.0
@@ -53,7 +53,7 @@ for id, (image, depth_gt) in enumerate(dataset):
 
     # Run inference.
     begin = time.time()
-    prediction = model.infer(image * 2 - 1, f_px=None)
+    prediction, fov = model(image * 2 - 1)
     end = time.time()
     elapse_time += end - begin
     cnt += 1
