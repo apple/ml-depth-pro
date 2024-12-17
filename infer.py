@@ -67,31 +67,3 @@ for id, (image, depth_gt) in enumerate(dataset):
     # Normalize the depth maps for visualization
     predict_depth_vis = predict_depth_np
     save_single_fig(predict_depth_vis, save_root, id)
-    # print(depth_gt.shape)
-    # depth_gt = depth_gt.squeeze().cpu().numpy()
-    # depth_gt_vis = depth_gt
-
-    # # Create the figure and axes
-    # fig, axes = plt.subplots(1, 3, figsize=(30, 10))
-    #
-    # # Plot input image
-    # axes[0].imshow(image_numpy)
-    # axes[0].set_title("Input Image")
-    # axes[0].axis("off")
-    #
-    # # Plot predicted depth
-    # axes[1].imshow(predict_depth_vis, cmap="viridis")
-    # axes[1].set_title("Predicted Depth")
-    # axes[1].axis("off")
-    #
-    # # Plot ground truth depth
-    # axes[2].imshow(depth_gt_vis, cmap="viridis")
-    # axes[2].set_title("Ground Truth Depth")
-    # axes[2].axis("off")
-    #
-    # # Save and show the figure
-    # output_path = os.path.join(save_root, f"{id}.png")
-    # plt.savefig(output_path, bbox_inches="tight")
-    # plt.close(fig)
-    #
-    # print(f"Visualization saved to {output_path}")
