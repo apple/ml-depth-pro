@@ -7,6 +7,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 import torch
 import src.depth_pro.depth_pro as depth_pro
+from dataset.AM2KDataset import AM2KDataset
 from dataset.HypersimDataset import HypersimDataset
 from dataset.NYUDataset import NYUDataset
 from dataset.SintelDataset import SintelDataset
@@ -20,6 +21,8 @@ def get_dataset(dataset_name):
         return SintelDataset()
     elif dataset_name == "NYUv2":
         return NYUDataset()
+    elif dataset_name == "AM2K":
+        return AM2KDataset()
 
 
 if __name__ == "__main__":
@@ -38,7 +41,7 @@ if __name__ == "__main__":
         os.makedirs(save_root, exist_ok=True)
         dataset = get_dataset(dataset_name)
 
-        model_names = ['marigold', 'dav2', 'depth-pro']
+        model_names = ['dav2-test-large', 'depth-pro-test-large', 'dav2']
 
         for id, (image, depth_gt) in enumerate(dataset):
             image_numpy = image.cpu().numpy().transpose(1, 2, 0)
@@ -67,7 +70,9 @@ if __name__ == "__main__":
 
             for i, ax in enumerate(axes.flatten()):
                 if i < len(images):
-                    ax.imshow(images[i], cmap='viridis' if i > 0 else None)
+                    # Resize the image to 768x768
+                    resized_image = np.array(Image.fromarray(images[i]).resize((768, 768)))
+                    ax.imshow(resized_image, cmap='viridis' if i > 0 else None)
                     ax.set_title(titles[i])
                 ax.axis("off")  # Turn off axes for all subplots
 
