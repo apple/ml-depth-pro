@@ -71,6 +71,7 @@ def get_meta(meta_json):
                 print(f"File not found: {image_path}")
                 continue
             image_paths.append(image_path)
+    image_paths = sorted(image_paths)
     cnt = 0
     with open(meta_json, 'w') as f:
         for image_path in image_paths:
