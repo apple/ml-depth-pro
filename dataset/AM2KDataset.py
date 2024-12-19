@@ -15,34 +15,25 @@ import cv2
 class AM2KDataset(BaseDataset):
     def __init__(self):
         super().__init__()
-        meta_json = "/dataset/sharedir/research/MPI-Sintel/meta_data.json"
+        meta_json = '/dataset/vfayezzhang/dataset/AM-2K/validation/validation_meta.json'
         self.meta_json = meta_json
         self.image_paths = []
-        self.depth_paths = []
-        self.depth_threshold = 200.
         with open(meta_json, "r", encoding="utf-8") as infile:
             for line in infile:
                 entry = json.loads(line)
                 self.image_paths.append(entry["img_path"])
-                self.depth_paths.append(entry["depth_path"])
 
     def __len__(self):
         return len(self.image_paths)
 
-    def preproess(self, image_path, depth_path):
+    def preproess(self, image_path):
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = image / 255.0
 
-        depth_info = open(depth_path, 'rb')
-        check = np.fromfile(depth_info, dtype=np.float32, count=1)[0]
-        width = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
-        height = np.fromfile(depth_info, dtype=np.int32, count=1)[0]
-        size = width * height
-        depth = np.fromfile(depth_info, dtype=np.float32, count=-1).reshape((height, width))
         # depth = np.clip(depth, 0.0, self.depth_threshold)
 
-        return image, depth
+        return image
 
     def __getitem__(self, idx):
         '''
@@ -53,10 +44,9 @@ class AM2KDataset(BaseDataset):
         '''
         if isinstance(idx, list):
             return [self.__getitem__(i) for i in idx]
-        image_np, depth_np = self.preproess(self.image_paths[idx], self.depth_paths[idx])
+        image_np = self.preproess(self.image_paths[idx])
         to_tensor = transforms.ToTensor()
         image = to_tensor(image_np)
-        depth = to_tensor(depth_np)
         return image, depth
 
 
