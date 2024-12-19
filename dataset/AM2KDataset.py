@@ -47,7 +47,7 @@ class AM2KDataset(BaseDataset):
         image_np = self.preproess(self.image_paths[idx])
         to_tensor = transforms.ToTensor()
         image = to_tensor(image_np)
-        return image, depth
+        return image
 
 
 def get_meta(meta_json):
