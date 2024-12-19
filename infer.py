@@ -68,7 +68,9 @@ for id, (image, depth_gt) in enumerate(dataset):
     if cnt % 20 == 0:
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
     # print(f"prediction shape: {prediction.shape}")
+    print(f"Prediction range: {torch.min(prediction), torch.max(prediction)}")
     depth = 1 / prediction
+    print(f"Depth range: {torch.min(depth), torch.max(depth)}")
     predict_depth_np = depth.cpu().numpy()
     if cnt == 1002:
         break
