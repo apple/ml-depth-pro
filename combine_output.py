@@ -25,6 +25,28 @@ def get_dataset(dataset_name):
         return AM2KDataset()
 
 
+def clip_array_percentile(array, lower_percentile=20, upper_percentile=80):
+    """
+    Clips the values in the NumPy array to the range defined by the lower and upper percentiles.
+
+    Parameters:
+        array (np.ndarray): Input array.
+        lower_percentile (float): The lower percentile (default: 20).
+        upper_percentile (float): The upper percentile (default: 80).
+
+    Returns:
+        np.ndarray: The clipped array.
+    """
+    # Calculate the percentile values
+    lower_bound = np.percentile(array, lower_percentile)
+    upper_bound = np.percentile(array, upper_percentile)
+
+    # Clip the array
+    clipped_array = np.clip(array, lower_bound, upper_bound)
+
+    return clipped_array
+
+
 if __name__ == "__main__":
     import os
     import cv2
@@ -46,6 +68,8 @@ if __name__ == "__main__":
         for id, (image, depth_gt) in enumerate(dataset):
             image_numpy = image.cpu().numpy().transpose(1, 2, 0)
             depth_gt_np = depth_gt.squeeze().cpu().numpy()
+            depth_gt_np = clip_array_percentile(depth_gt_np, 5, 95)
+            depth_gt_np = depth_gt_np / 200
 
             # Image list and titles
             images = [image_numpy, depth_gt_np]
