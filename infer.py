@@ -41,7 +41,7 @@ def get_dataset(dataset_name):
 # dataset_name = "Hypersim"
 dataset_name = "NYUv2"
 dataset = get_dataset(dataset_name)
-save_root = os.path.join('./vis/depth-pro-test-elapse', dataset_name)
+save_root = os.path.join('./vis/depth-pro-test-large', dataset_name)
 os.makedirs(save_root, exist_ok=True)
 cnt = 0
 elapse_time = 0.0
@@ -75,4 +75,4 @@ for id, (image, depth_gt) in enumerate(dataset):
 
     # Normalize the depth maps for visualization
     predict_depth_vis = predict_depth_np
-    # save_single_fig(predict_depth_vis, save_root, id)
+    save_single_fig(predict_depth_vis, save_root, id)
