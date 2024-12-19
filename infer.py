@@ -13,6 +13,10 @@ from dataset.HypersimDataset import HypersimDataset
 from dataset.NYUDataset import NYUDataset
 from dataset.SintelDataset import SintelDataset
 from dataset.utils import get_hdf5_array
+from PIL import Image
+import numpy as np
+import os
+import matplotlib.pyplot as plt
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 # Load model and preprocessing transform
@@ -21,11 +25,19 @@ model = model.to(device).eval()
 
 
 def save_single_fig(predict_depth, save_root, id):
+    # Normalize to range [0, 1]
     predict_depth = (predict_depth - np.min(predict_depth)) / (np.max(predict_depth) - np.min(predict_depth))
-    predict_depth = (predict_depth * 255).astype(np.uint8)
+
+    # Apply colormap
+    cmap = plt.get_cmap('viridis')  # 使用 'viridis' 颜色映射，可更改为其他映射
+    predict_depth_colored = cmap(predict_depth)  # 返回 RGBA 数组
+    predict_depth_colored = (predict_depth_colored[:, :, :3] * 255).astype(np.uint8)  # 转换为 RGB
+
+    # Save as PNG using PIL
     save_path = os.path.join(save_root, f"{id}.png")
     print(f"Saving to {save_path}")
-    cv2.imwrite(save_path, predict_depth)
+    image = Image.fromarray(predict_depth_colored)
+    image.save(save_path)
 
 
 def get_dataset(dataset_name):
