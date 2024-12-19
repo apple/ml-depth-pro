@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
             for _model_name in model_names:
                 predict_depth_path = os.path.join(res_root, _model_name, dataset_name, f"{id}.png")
-                predict_depth = cv2.imread(predict_depth_path)
+                predict_depth = cv2.imread(predict_depth_path, cv2.IMREAD_UNCHANGED)
                 print(f"Shape of predict_depth: {predict_depth.shape}")
                 if predict_depth is None:
                     print(f"File not found: {predict_depth_path}")
