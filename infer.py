@@ -50,7 +50,7 @@ elapse_time = 0.0
 for id, data in enumerate(dataset):
     image = data[0]
     # depth = data[1]
-    image = image.unsqueeze(0)
+    image = image.unsqueeze(0).to(device)
     image = torchvision.transforms.Resize((1536, 1536))(image)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
 
