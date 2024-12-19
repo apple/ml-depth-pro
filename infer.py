@@ -72,6 +72,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     predict_depth_np = depth.cpu().numpy()
     if cnt == 1002:
         break
+
     # Normalize the depth maps for visualization
     predict_depth_vis = predict_depth_np
     # save_single_fig(predict_depth_vis, save_root, id)
