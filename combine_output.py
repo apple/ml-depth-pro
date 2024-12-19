@@ -81,7 +81,7 @@ if __name__ == "__main__":
                         image = images[i]
                     # Resize using OpenCV
                     resized_image = cv2.resize(image, (768, 768), interpolation=cv2.INTER_LINEAR)
-                    ax.imshow(resized_image, cmap='viridis' if i > 0 else None)
+                    ax.imshow(resized_image, cmap='viridis' if i not in [1, 4] else None)
                     ax.set_title(titles[i])
                 ax.axis("off")  # Turn off axes for all subplots
 
