@@ -71,6 +71,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     depth = 1 / prediction
     print(f"Depth range: {torch.min(depth), torch.max(depth)}")
     predict_depth_np = depth.cpu().numpy()
+    print(f"Predict depth shape: {predict_depth_np.shape}")
     if cnt == 1002:
         break
 
