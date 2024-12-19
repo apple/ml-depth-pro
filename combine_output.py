@@ -72,8 +72,13 @@ if __name__ == "__main__":
 
             for i, ax in enumerate(axes.flatten()):
                 if i < len(images):
-                    # Resize the image to 768x768
-                    resized_image = np.array(Image.fromarray(images[i]).resize((768, 768)))
+                    # Ensure the image is converted to uint8 if necessary
+                    if images[i].dtype == np.float32:
+                        image = (images[i] * 255).clip(0, 255).astype(np.uint8)
+                    else:
+                        image = images[i]
+                    # Resize using OpenCV
+                    resized_image = cv2.resize(image, (768, 768), interpolation=cv2.INTER_LINEAR)
                     ax.imshow(resized_image, cmap='viridis' if i > 0 else None)
                     ax.set_title(titles[i])
                 ax.axis("off")  # Turn off axes for all subplots
