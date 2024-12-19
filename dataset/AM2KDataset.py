@@ -52,7 +52,6 @@ class AM2KDataset(BaseDataset):
 
 def get_meta(meta_json):
     image_root = "/dataset/vfayezzhang/dataset/AM-2K/validation/original/"
-    idx = 0
     image_paths = []
     for root, dir, files in os.walk(image_root):
         for file in files:
@@ -82,5 +81,5 @@ if __name__ == "__main__":
     dataset = AM2KDataset()
     print(f"Dataset length: {len(dataset)}")
 
-    for id, (image, depth) in enumerate(dataset):
-        print(f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+    for id, image in enumerate(dataset):
+        print(f"Id: {id}, Image shape: {image.shape}")
