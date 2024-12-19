@@ -40,6 +40,28 @@ def save_single_fig(predict_depth, save_root, id):
     image.save(save_path)
 
 
+def clip_array_percentile(array, lower_percentile=20, upper_percentile=80):
+    """
+    Clips the values in the NumPy array to the range defined by the lower and upper percentiles.
+
+    Parameters:
+        array (np.ndarray): Input array.
+        lower_percentile (float): The lower percentile (default: 20).
+        upper_percentile (float): The upper percentile (default: 80).
+
+    Returns:
+        np.ndarray: The clipped array.
+    """
+    # Calculate the percentile values
+    lower_bound = np.percentile(array, lower_percentile)
+    upper_bound = np.percentile(array, upper_percentile)
+
+    # Clip the array
+    clipped_array = np.clip(array, lower_bound, upper_bound)
+
+    return clipped_array
+
+
 def get_dataset(dataset_name):
     if dataset_name == "Hypersim":
         return HypersimDataset()
@@ -88,6 +110,7 @@ for id, data in enumerate(dataset):
     depth = 1 / prediction
     print(f"Depth range: {torch.min(depth), torch.max(depth)}")
     predict_depth_np = depth.cpu().numpy()
+    predict_depth_np = clip_array_percentile(predict_depth_np, 5, 95)
     print(f"Predict depth shape: {predict_depth_np.shape}")
     if cnt == 1002:
         break
