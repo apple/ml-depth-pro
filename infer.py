@@ -107,7 +107,7 @@ for id, data in enumerate(dataset):
     # print(f"prediction shape: {prediction.shape}")
     # print(f"Prediction range: {torch.min(prediction), torch.max(prediction)}")
     prediction = prediction.squeeze()
-    depth = 1 / prediction
+    depth = prediction
     print(f"Depth range: {torch.min(depth), torch.max(depth)}")
     predict_depth_np = depth.cpu().numpy()
     predict_depth_np = clip_array_percentile(predict_depth_np, 5, 95)
