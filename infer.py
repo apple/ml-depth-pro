@@ -68,6 +68,7 @@ for id, (image, depth_gt) in enumerate(dataset):
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
     # print(f"prediction shape: {prediction.shape}")
     # print(f"Prediction range: {torch.min(prediction), torch.max(prediction)}")
+    prediction = prediction.squeeze()
     depth = 1 / prediction
     print(f"Depth range: {torch.min(depth), torch.max(depth)}")
     predict_depth_np = depth.cpu().numpy()
