@@ -73,9 +73,9 @@ def get_dataset(dataset_name):
         return AM2KDataset()
 
 
-# dataset_name = "Sintel"
+dataset_name = "Sintel"
 # dataset_name = "Hypersim"
-dataset_name = "AM2K"
+# dataset_name = "AM2K"
 dataset = get_dataset(dataset_name)
 save_root = os.path.join('./vis/depth-pro-test-large', dataset_name)
 os.makedirs(save_root, exist_ok=True)
