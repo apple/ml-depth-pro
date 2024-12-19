@@ -21,8 +21,7 @@ model = model.to(device).eval()
 
 def save_single_fig(predict_depth, save_root, id):
     predict_depth = (predict_depth - np.min(predict_depth)) / (np.max(predict_depth) - np.min(predict_depth))
-    predict_depth = predict_depth * 255.0
-    predict_depth = predict_depth.astype(np.uint8)
+    predict_depth = (predict_depth * 255).astype(np.uint8)
     save_path = os.path.join(save_root, f"{id}.png")
     print(f"Saving to {save_path}")
     cv2.imwrite(save_path, predict_depth)
@@ -68,7 +67,7 @@ for id, (image, depth_gt) in enumerate(dataset):
     if cnt % 20 == 0:
         print(f"Avg time for {cnt} images: {elapse_time / cnt}")
     # print(f"prediction shape: {prediction.shape}")
-    print(f"Prediction range: {torch.min(prediction), torch.max(prediction)}")
+    # print(f"Prediction range: {torch.min(prediction), torch.max(prediction)}")
     depth = 1 / prediction
     print(f"Depth range: {torch.min(depth), torch.max(depth)}")
     predict_depth_np = depth.cpu().numpy()
