@@ -8,6 +8,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 import torch
 import src.depth_pro.depth_pro as depth_pro
+from dataset.AM2KDataset import AM2KDataset
 from dataset.HypersimDataset import HypersimDataset
 from dataset.NYUDataset import NYUDataset
 from dataset.SintelDataset import SintelDataset
@@ -34,18 +35,21 @@ def get_dataset(dataset_name):
         return SintelDataset()
     elif dataset_name == "NYUv2":
         return NYUDataset()
+    elif dataset_name == 'AM2K':
+        return AM2KDataset()
 
 
 # dataset_name = "Sintel"
 # dataset_name = "Hypersim"
-dataset_name = "NYUv2"
+dataset_name = "AM2K"
 dataset = get_dataset(dataset_name)
 save_root = os.path.join('./vis/depth-pro-test-large', dataset_name)
 os.makedirs(save_root, exist_ok=True)
 cnt = 0
 elapse_time = 0.0
-for id, (image, depth_gt) in enumerate(dataset):
-    image, depth_gt = image.to(device), depth_gt.to(device)
+for id, data in enumerate(dataset):
+    image = data[0]
+    # depth = data[1]
     image = image.unsqueeze(0)
     image = torchvision.transforms.Resize((1536, 1536))(image)
     image_numpy = image.squeeze(0).cpu().numpy().transpose(1, 2, 0)
