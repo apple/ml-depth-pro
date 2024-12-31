@@ -80,7 +80,7 @@ if __name__ == "__main__":
         print(f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}")
         print(image.max(), image.min(), image.mean())
         print(depth.max(), depth.min(), depth.mean())
-        save_root = 'vis'
+        save_root = 'vis/hypersim'
         if not os.path.exists(save_root):
             os.makedirs(save_root)
         image_save_path = os.path.join(save_root, f'{id}_image.png')
