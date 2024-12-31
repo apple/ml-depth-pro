@@ -89,3 +89,4 @@ if __name__ == "__main__":
         torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
         max_v, min_v = depth.max(), depth.min()
         torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
+        input('continue?')
