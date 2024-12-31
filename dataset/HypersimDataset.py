@@ -76,7 +76,7 @@ if __name__ == "__main__":
     print(f"Dataset length: {len(dataset)}")
     for id in range(len(dataset)):
         idx = random.randint(0, len(dataset) - 1)
-        idx = 13030
+        idx = 30887
         image, depth = dataset[idx]
         print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
         print(image.max(), image.min(), image.mean())
