@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
 from typing import Mapping, Optional, Tuple, Union
 
@@ -215,7 +216,7 @@ class DepthPro(nn.Module):
         """Return the internal image size of the network."""
         return self.encoder.img_size
 
-    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+    def forward(self, x: torch.Tensor, test=False):
         """Decode by projection and fusion of multi-resolution encodings.
 
         Args:
@@ -229,8 +230,10 @@ class DepthPro(nn.Module):
         """
 
         _, _, H, W = x.shape
+        # print(f"self.img_size: {self.img_size}, H: {H}, W: {W}")
         assert H == self.img_size and W == self.img_size
-
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
         encodings = self.encoder(x)
         features, features_0 = self.decoder(encodings)
         canonical_inverse_depth = self.head(features)
@@ -239,7 +242,10 @@ class DepthPro(nn.Module):
         if hasattr(self, "fov"):
             fov_deg = self.fov.forward(x, features_0.detach())
 
-        return canonical_inverse_depth, fov_deg
+        if test:
+            return canonical_inverse_depth, fov_deg
+        else:
+            return canonical_inverse_depth, fov_deg
 
     @torch.no_grad()
     def infer(
