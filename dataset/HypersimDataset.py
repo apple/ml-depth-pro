@@ -102,7 +102,7 @@ if __name__ == "__main__":
             image = get_hdf5_array(image_path)
             depth = get_hdf5_array(depth_path)
             # count the percentage of values larger than 1
-            img_invalid_percentage = (image > 1).sum() / image.size
+            img_invalid_percentage = (image > 1).sum() / (image > 0).sum()
             print(f"Image {id} invalid percentage: {img_invalid_percentage}")
             if img_invalid_percentage > threshold:
                 with open(f'Invalid Image {threshold}.json', 'a') as f:
