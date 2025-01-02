@@ -1,5 +1,4 @@
 import json
-import os
 
 import numpy as np
 import torch
@@ -7,8 +6,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset
 from torchvision import transforms
+
+import sys
+
+sys.path.append('/dataset/hailangwu/zk/project/JDU/ml-depth-pro')
+
 from dataset.BaseDataset import BaseDataset
 from dataset.utils import get_hdf5_array
+import random
+import glob
+import cv2
+import os
+
+
+def depth_normalize(depth):
+    depth_mean, depth_std = torch.mean(depth, dim=(1, 2), keepdim=True), torch.std(depth, dim=(1, 2), keepdim=True)
+    normalized_depth = (depth - depth_mean) * (depth_std + 1e-12)
+    return normalized_depth
 
 
 class HypersimDataset(BaseDataset):
@@ -31,10 +45,11 @@ class HypersimDataset(BaseDataset):
     def preproess(self, image_path, depth_path):
         image = get_hdf5_array(image_path)
         depth = get_hdf5_array(depth_path)
-        # Count the number exceeding the threshold
-        img_invalid_percentage = np.sum(image > 1.0) / image.size
-        image = np.clip(image, 0.0, 1.0)
-        depth = np.clip(depth, 0.0, self.depth_threshold)
+        # image = (image - image.min()) / (image.max() - image.min() + 1e-6)
+        print('-------------raw image', image.shape, image.max(), image.min())
+        image = np.clip(image, 0, 1.0)
+        depth = np.clip(depth, 0, self.depth_threshold)
+
         return image, depth
 
     def __getitem__(self, idx):
@@ -44,19 +59,33 @@ class HypersimDataset(BaseDataset):
             image: torch.Tensor
             depth: torch.Tensor
         '''
-        if isinstance(idx, list):
-            return [self.__getitem__(i) for i in idx]
+        # if isinstance(idx, list):
+        #     return [self.__getitem__(i) for i in idx]
         image_np, depth_np = self.preproess(self.image_paths[idx], self.depth_paths[idx])
         to_tensor = transforms.ToTensor()
         image = to_tensor(image_np)
         depth = to_tensor(depth_np)
+        # depth = depth_normalize(depth)
         return image, depth
 
 
-
-
 if __name__ == "__main__":
-    dataset = HypersimDataset()
+    import torchvision
+
+    dataset = HypersimDataset()  #
     print(f"Dataset length: {len(dataset)}")
-    for id, (image, depth) in enumerate(dataset):
-        print(f"Id: {id}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+    idx = 0
+    for id in range(len(dataset)):
+        image, depth = dataset[idx]
+        print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+        print(image.max(), image.min(), image.mean())
+        print(depth.max(), depth.min(), depth.mean())
+        save_root = 'vis/hypersim'
+        if not os.path.exists(save_root):
+            os.makedirs(save_root)
+        image_save_path = os.path.join(save_root, f'{idx}_image.png')
+        depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
+        torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
+        max_v, min_v = depth.max(), depth.min()
+        torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
+        idx = int(input('input idx:'))
