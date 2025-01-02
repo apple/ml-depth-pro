@@ -115,11 +115,11 @@ def clean():
     for threshold in thresholds:
         with open(f"/dataset/sharedir/research/Hypersim/valid_files_{threshold}.json", "w") as outfile:
             for id in valid_id[threshold]:
-                json.dump({"img_path": image_paths[id], "depth_path": depth_paths[id]}, outfile)
+                json.dump({'id': id, 'img_path': image_paths[id], 'depth_path': depth_paths[id]}, outfile)
                 outfile.write("\n")
         with open(f"/dataset/sharedir/research/Hypersim/invalid_files_{threshold}.json", "w") as outfile:
             for id in invalid_id[threshold]:
-                json.dump({"img_path": image_paths[id], "depth_path": depth_paths[id]}, outfile)
+                json.dump({'id': id, 'img_path': image_paths[id], 'depth_path': depth_paths[id]}, outfile)
                 outfile.write("\n")
 
 
