@@ -94,7 +94,7 @@ def clean():
     print(f"len of image_paths: {len(image_paths)}\n"
           f"len of depth_paths: {len(depth_paths)}")
 
-    thresholds = [20, 25, 30, 35, 40]
+    thresholds = [5, 10, 15, 20, 25, 30, 35, 40]
     valid_id = {threshold: [] for threshold in thresholds}
     invalid_id = {threshold: [] for threshold in thresholds}
 
