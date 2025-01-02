@@ -129,6 +129,7 @@ def clean():
                     f.write('\n')
                 valid_cnt[threshold] += 1
     print(valid_cnt)
+    print(invalid_cnt)
 
 
 if __name__ == "__main__":
