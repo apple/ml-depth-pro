@@ -1,5 +1,6 @@
 import json
-
+from joblib import Parallel, delayed
+import json
 import numpy as np
 import torch
 import torch.nn as nn
@@ -71,6 +72,18 @@ class HypersimDataset(BaseDataset):
 
 
 def clean():
+    def process_id(id):
+        image_path = image_paths[id]
+        depth_path = depth_paths[id]
+        image = get_hdf5_array(image_path)
+        # Calculate the invalid percentage
+        img_invalid_percentage = (((image > 1).sum() / (image > -0x3ff).sum()) +
+                                  (image < 0).sum() / (image < 0x3ff).sum()) * 100
+        print(f"Image {id} invalid percentage: {img_invalid_percentage}")
+        result = {threshold: "valid" if img_invalid_percentage <= threshold else "invalid"
+                  for threshold in thresholds}
+        return id, result
+
     image_paths = []
     depth_paths = []
     with open(meta_json, "r", encoding="utf-8") as infile:
@@ -80,38 +93,22 @@ def clean():
             depth_paths.append(entry["depth_path"])
     print(f"len of image_paths: {len(image_paths)}\n"
           f"len of depth_paths: {len(depth_paths)}")
-    thresholds = [20, 25, 30, 35, 40]
-    valid_id = {
-        20: [],
-        25: [],
-        30: [],
-        35: [],
-        40: [],
-    }
-    invalid_id = {
-        20: [],
-        25: [],
-        30: [],
-        35: [],
-        40: [],
-    }
-    cnt = 0
-    for id in range(30800, 32288):
-        cnt += 1
-        image_path = image_paths[id]
-        depth_path = depth_paths[id]
-        image = get_hdf5_array(image_path)
-        # count the percentage of values larger than 1
-        img_invalid_percentage = (((image > 1).sum() / (image > - 0x3ff).sum()) +
-                                  (image < 0).sum() / (image < 0x3ff).sum())
-        img_invalid_percentage = img_invalid_percentage * 100
-        print(f"Image {id} invalid percentage: {img_invalid_percentage}")
-        for threshold in thresholds:
-            if img_invalid_percentage > threshold:
-                invalid_id[threshold].append(id)
-            else:
-                valid_id[threshold].append(id)
 
+    thresholds = [20, 25, 30, 35, 40]
+    valid_id = {threshold: [] for threshold in thresholds}
+    invalid_id = {threshold: [] for threshold in thresholds}
+
+    results = Parallel(n_jobs=-1)(delayed(process_id)(id) for id in range(len(image_paths)))
+
+    # Organize results
+    for id, result in results:
+        for threshold, status in result.items():
+            if status == "valid":
+                valid_id[threshold].append(id)
+            else:
+                invalid_id[threshold].append(id)
+
+    # Print summary
     for threshold in thresholds:
         print(f"Threshold: {threshold}, valid: {len(valid_id[threshold])}, invalid: {len(invalid_id[threshold])}")
 
