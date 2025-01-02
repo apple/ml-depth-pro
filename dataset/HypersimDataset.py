@@ -95,14 +95,15 @@ if __name__ == "__main__":
         35: 0,
         40: 0,
     }
-    for id in range(len(image_paths)):
+    for id in range(30800, 32288):
         for threshold in thresholds:
             image_path = image_paths[id]
             depth_path = depth_paths[id]
             image = get_hdf5_array(image_path)
             depth = get_hdf5_array(depth_path)
             # count the percentage of values larger than 1
-            img_invalid_percentage = (image > 1).sum() / (image > 0).sum()
+            img_invalid_percentage = ((image > 1).sum() / (image > - 0x3ff).sum()) + (image < 0).sum() / (image <
+                                                                                                          0x3ff).sum()
             print(f"Image {id} invalid percentage: {img_invalid_percentage}")
             if img_invalid_percentage > threshold:
                 with open(f'Invalid Image {threshold}.json', 'a') as f:
