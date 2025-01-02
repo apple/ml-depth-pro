@@ -78,7 +78,7 @@ if __name__ == "__main__":
             entry = json.loads(line)
             image_paths.append(entry["img_path"])
             depth_paths.append(entry["depth_path"])
-    print(f"len of image_paths: {len(image_paths)}"
+    print(f"len of image_paths: {len(image_paths)}\n"
           f"len of depth_paths: {len(depth_paths)}")
     thresholds = [20, 25, 30, 35, 40]
     valid_cnt = {
@@ -103,6 +103,7 @@ if __name__ == "__main__":
             depth = get_hdf5_array(depth_path)
             # count the percentage of values larger than 1
             img_invalid_percentage = (image > 1).sum() / image.size
+            print(f"Image {id} invalid percentage: {img_invalid_percentage}")
             if img_invalid_percentage > threshold:
                 with open(f'Invalid Image {threshold}.json', 'a') as f:
                     json.dump({
