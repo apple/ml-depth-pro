@@ -112,6 +112,16 @@ def clean():
     for threshold in thresholds:
         print(f"Threshold: {threshold}, valid: {len(valid_id[threshold])}, invalid: {len(invalid_id[threshold])}")
 
+    for threshold in thresholds:
+        with open(f"/dataset/sharedir/research/Hypersim/valid_files_{threshold}.json", "w") as outfile:
+            for id in valid_id[threshold]:
+                json.dump({"img_path": image_paths[id], "depth_path": depth_paths[id]}, outfile)
+                outfile.write("\n")
+        with open(f"/dataset/sharedir/research/Hypersim/invalid_files_{threshold}.json", "w") as outfile:
+            for id in invalid_id[threshold]:
+                json.dump({"img_path": image_paths[id], "depth_path": depth_paths[id]}, outfile)
+                outfile.write("\n")
+
 
 if __name__ == "__main__":
     clean()
