@@ -81,54 +81,39 @@ def clean():
     print(f"len of image_paths: {len(image_paths)}\n"
           f"len of depth_paths: {len(depth_paths)}")
     thresholds = [20, 25, 30, 35, 40]
-    valid_cnt = {
-        20: 0,
-        25: 0,
-        30: 0,
-        35: 0,
-        40: 0,
+    valid_id = {
+        20: [],
+        25: [],
+        30: [],
+        35: [],
+        40: [],
     }
-    invalid_cnt = {
-        20: 0,
-        25: 0,
-        30: 0,
-        35: 0,
-        40: 0,
+    invalid_id = {
+        20: [],
+        25: [],
+        30: [],
+        35: [],
+        40: [],
     }
     cnt = 0
     for id in range(30800, 32288):
         cnt += 1
-        if cnt % 100 == 0:
-            print(f"Valid count: {valid_cnt}, Invalid count: {invalid_cnt}")
+        image_path = image_paths[id]
+        depth_path = depth_paths[id]
+        image = get_hdf5_array(image_path)
+        # count the percentage of values larger than 1
+        img_invalid_percentage = (((image > 1).sum() / (image > - 0x3ff).sum()) +
+                                  (image < 0).sum() / (image < 0x3ff).sum())
+        img_invalid_percentage = img_invalid_percentage * 100
+        print(f"Image {id} invalid percentage: {img_invalid_percentage}")
         for threshold in thresholds:
-            image_path = image_paths[id]
-            depth_path = depth_paths[id]
-            image = get_hdf5_array(image_path)
-            # count the percentage of values larger than 1
-            img_invalid_percentage = (((image > 1).sum() / (image > - 0x3ff).sum()) +
-                                      (image < 0).sum() / (image < 0x3ff).sum())
-            img_invalid_percentage = img_invalid_percentage * 100
-            print(f"Image {id} invalid percentage: {img_invalid_percentage}")
             if img_invalid_percentage > threshold:
-                with open(f'Invalid Image {threshold}.json', 'a') as f:
-                    json.dump({
-                        'id': id,
-                        'img_path': image_path,
-                        'depth_path': depth_path,
-                    }, f)
-                    f.write('\n')
-                invalid_cnt[threshold] += 1
+                invalid_id[threshold].append(id)
             else:
-                with open(f'Valid Image {threshold}.json', 'a') as f:
-                    json.dump({
-                        'id': id,
-                        'img_path': image_path,
-                        'depth_path': depth_path,
-                    }, f)
-                    f.write('\n')
-                valid_cnt[threshold] += 1
-    print(valid_cnt)
-    print(invalid_cnt)
+                valid_id[threshold].append(id)
+
+    for threshold in thresholds:
+        print(f"Threshold: {threshold}, valid: {len(valid_id[threshold])}, invalid: {len(invalid_id[threshold])}")
 
 
 if __name__ == "__main__":
