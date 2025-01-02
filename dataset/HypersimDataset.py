@@ -31,6 +31,8 @@ class HypersimDataset(BaseDataset):
     def preproess(self, image_path, depth_path):
         image = get_hdf5_array(image_path)
         depth = get_hdf5_array(depth_path)
+        # Count the number exceeding the threshold
+        img_invalid_percentage = np.sum(image > 1.0) / image.size
         image = np.clip(image, 0.0, 1.0)
         depth = np.clip(depth, 0.0, self.depth_threshold)
         return image, depth
