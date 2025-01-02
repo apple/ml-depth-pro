@@ -71,22 +71,72 @@ class HypersimDataset(BaseDataset):
 
 
 if __name__ == "__main__":
-    import torchvision
+    image_paths = []
+    depth_paths = []
+    with open(meta_json, "r", encoding="utf-8") as infile:
+        for line in infile:
+            entry = json.loads(line)
+            image_paths.append(entry["img_path"])
+            depth_paths.append(entry["depth_path"])
+    thresholds = [20, 25, 30, 35, 40]
+    valid_cnt = {
+        20: 0,
+        25: 0,
+        30: 0,
+        35: 0,
+        40: 0,
+    }
+    invalid_cnt = {
+        20: 0,
+        25: 0,
+        30: 0,
+        35: 0,
+        40: 0,
+    }
+    for id in range(len(image_paths)):
+        for threshold in thresholds:
+            image_path = image_paths[id]
+            depth_path = depth_paths[id]
+            image = get_hdf5_array(image_path)
+            depth = get_hdf5_array(depth_path)
+            # count the percentage of values larger than 1
+            img_invalid_percentage = (image > 1).sum() / image.size
+            if img_invalid_percentage > threshold:
+                with open(f'Invalid Image {threshold}.json', 'a') as f:
+                    json.dump({
+                        'id': id,
+                        'img_path': image_path,
+                        'depth_path': depth_path,
+                    }, f)
+                    f.write('\n')
+                invalid_cnt[threshold] += 1
+            else:
+                with open(f'Valid Image {threshold}.json', 'a') as f:
+                    json.dump({
+                        'id': id,
+                        'img_path': image_path,
+                        'depth_path': depth_path,
+                    }, f)
+                    f.write('\n')
+                valid_cnt[threshold] += 1
+    print(valid_cnt)
 
-    dataset = HypersimDataset()  #
-    print(f"Dataset length: {len(dataset)}")
-    idx = 0
-    for id in range(len(dataset)):
-        image, depth = dataset[idx]
-        print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
-        print(image.max(), image.min(), image.mean())
-        print(depth.max(), depth.min(), depth.mean())
-        save_root = 'vis/hypersim'
-        if not os.path.exists(save_root):
-            os.makedirs(save_root)
-        image_save_path = os.path.join(save_root, f'{idx}_image.png')
-        depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
-        torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
-        max_v, min_v = depth.max(), depth.min()
-        torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
-        idx = int(input('input idx:'))
+#     import torchvision
+#
+#     dataset = HypersimDataset()  #
+#     print(f"Dataset length: {len(dataset)}")
+#     idx = 0
+#     for id in range(len(dataset)):
+#         image, depth = dataset[idx]
+#         print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+#         print(image.max(), image.min(), image.mean())
+#         print(depth.max(), depth.min(), depth.mean())
+#         save_root = 'vis/hypersim'
+#         if not os.path.exists(save_root):
+#             os.makedirs(save_root)
+#         image_save_path = os.path.join(save_root, f'{idx}_image.png')
+#         depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
+#         torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
+#         max_v, min_v = depth.max(), depth.min()
+#         torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
+#         idx = int(input('input idx:'))
