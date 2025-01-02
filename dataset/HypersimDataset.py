@@ -104,7 +104,6 @@ def clean():
             image_path = image_paths[id]
             depth_path = depth_paths[id]
             image = get_hdf5_array(image_path)
-            depth = get_hdf5_array(depth_path)
             # count the percentage of values larger than 1
             img_invalid_percentage = (((image > 1).sum() / (image > - 0x3ff).sum()) +
                                       (image < 0).sum() / (image < 0x3ff).sum())
