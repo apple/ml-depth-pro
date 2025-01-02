@@ -125,23 +125,23 @@ def clean():
 
 if __name__ == "__main__":
     clean()
-    input()
-    import torchvision
-
-    dataset = HypersimDataset()  #
-    print(f"Dataset length: {len(dataset)}")
-    idx = 0
-    for id in range(len(dataset)):
-        image, depth = dataset[idx]
-        print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
-        print(image.max(), image.min(), image.mean())
-        print(depth.max(), depth.min(), depth.mean())
-        save_root = 'vis/hypersim'
-        if not os.path.exists(save_root):
-            os.makedirs(save_root)
-        image_save_path = os.path.join(save_root, f'{idx}_image.png')
-        depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
-        torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
-        max_v, min_v = depth.max(), depth.min()
-        torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
-        idx = int(input('input idx:'))
+    # input()
+    # import torchvision
+    #
+    # dataset = HypersimDataset()  #
+    # print(f"Dataset length: {len(dataset)}")
+    # idx = 0
+    # for id in range(len(dataset)):
+    #     image, depth = dataset[idx]
+    #     print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+    #     print(image.max(), image.min(), image.mean())
+    #     print(depth.max(), depth.min(), depth.mean())
+    #     save_root = 'vis/hypersim'
+    #     if not os.path.exists(save_root):
+    #         os.makedirs(save_root)
+    #     image_save_path = os.path.join(save_root, f'{idx}_image.png')
+    #     depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
+    #     torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
+    #     max_v, min_v = depth.max(), depth.min()
+    #     torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
+    #     idx = int(input('input idx:'))
