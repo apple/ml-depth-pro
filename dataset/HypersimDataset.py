@@ -70,7 +70,7 @@ class HypersimDataset(BaseDataset):
         return image, depth
 
 
-if __name__ == "__main__":
+def clean():
     image_paths = []
     depth_paths = []
     with open(meta_json, "r", encoding="utf-8") as infile:
@@ -95,7 +95,11 @@ if __name__ == "__main__":
         35: 0,
         40: 0,
     }
+    cnt = 0
     for id in range(30800, 32288):
+        cnt += 1
+        if cnt % 100 == 0:
+            print(f"Valid count: {valid_cnt}, Invalid count: {invalid_cnt}")
         for threshold in thresholds:
             image_path = image_paths[id]
             depth_path = depth_paths[id]
@@ -126,22 +130,26 @@ if __name__ == "__main__":
                 valid_cnt[threshold] += 1
     print(valid_cnt)
 
-#     import torchvision
-#
-#     dataset = HypersimDataset()  #
-#     print(f"Dataset length: {len(dataset)}")
-#     idx = 0
-#     for id in range(len(dataset)):
-#         image, depth = dataset[idx]
-#         print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
-#         print(image.max(), image.min(), image.mean())
-#         print(depth.max(), depth.min(), depth.mean())
-#         save_root = 'vis/hypersim'
-#         if not os.path.exists(save_root):
-#             os.makedirs(save_root)
-#         image_save_path = os.path.join(save_root, f'{idx}_image.png')
-#         depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
-#         torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
-#         max_v, min_v = depth.max(), depth.min()
-#         torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
-#         idx = int(input('input idx:'))
+
+if __name__ == "__main__":
+    clean()
+    input()
+    import torchvision
+
+    dataset = HypersimDataset()  #
+    print(f"Dataset length: {len(dataset)}")
+    idx = 0
+    for id in range(len(dataset)):
+        image, depth = dataset[idx]
+        print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
+        print(image.max(), image.min(), image.mean())
+        print(depth.max(), depth.min(), depth.mean())
+        save_root = 'vis/hypersim'
+        if not os.path.exists(save_root):
+            os.makedirs(save_root)
+        image_save_path = os.path.join(save_root, f'{idx}_image.png')
+        depth_save_path = os.path.join(save_root, f'{idx}_depth.png')
+        torchvision.utils.save_image(image.unsqueeze(0), image_save_path)
+        max_v, min_v = depth.max(), depth.min()
+        torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
+        idx = int(input('input idx:'))
