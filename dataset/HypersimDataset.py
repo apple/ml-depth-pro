@@ -78,6 +78,8 @@ if __name__ == "__main__":
             entry = json.loads(line)
             image_paths.append(entry["img_path"])
             depth_paths.append(entry["depth_path"])
+    print(f"len of image_paths: {len(image_paths)}"
+          f"len of depth_paths: {len(depth_paths)}")
     thresholds = [20, 25, 30, 35, 40]
     valid_cnt = {
         20: 0,
