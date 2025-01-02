@@ -18,6 +18,8 @@ import glob
 import cv2
 import os
 
+meta_json = "/dataset/sharedir/research/Hypersim/valid_files.json"
+
 
 def depth_normalize(depth):
     depth_mean, depth_std = torch.mean(depth, dim=(1, 2), keepdim=True), torch.std(depth, dim=(1, 2), keepdim=True)
@@ -28,7 +30,6 @@ def depth_normalize(depth):
 class HypersimDataset(BaseDataset):
     def __init__(self):
         super().__init__()
-        meta_json = "/dataset/sharedir/research/Hypersim/valid_files.json"
         self.meta_json = meta_json
         self.image_paths = []
         self.depth_paths = []
