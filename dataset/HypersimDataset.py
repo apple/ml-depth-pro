@@ -159,7 +159,7 @@ if __name__ == "__main__":
     print(f"Dataset length: {len(dataset)}")
     idx = 0
     for id in range(len(dataset)):
-        image, depth, illum, reflect = dataset[id]
+        image, depth, illum, reflect = dataset[idx]
 
         print(f"Id: {idx}, Image shape: {image.shape}, Depth shape: {depth.shape}")
         print(image.max(), image.min(), image.mean())
@@ -178,4 +178,4 @@ if __name__ == "__main__":
 
         max_v, min_v = depth.max(), depth.min()
         torchvision.utils.save_image(((depth - min_v) / (max_v - min_v)).unsqueeze(0), depth_save_path)
-        idx = int(input('input idx:'))
+        idx = random.randint(0, len(dataset) - 1)
