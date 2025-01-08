@@ -13,7 +13,7 @@ import cv2
 
 image_roots = ["/dataset/sharedir/research/AM-2K/AM-2K/train/original/",
                "/dataset/sharedir/research/AM-2K/AM-2K/validation/original/"]
-meta_json = '/dataset/sharedir/dataset/AM-2K/meta_data.json'
+meta_json = '/dataset/sharedir/research/AM-2K/meta_data.json'
 
 
 class AM2KDataset(BaseDataset):
