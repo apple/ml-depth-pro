@@ -11,8 +11,8 @@ from dataset.BaseDataset import BaseDataset
 from dataset.utils import get_hdf5_array
 import cv2
 
-image_root = ["/dataset/sharedir/research/AM-2K/AM-2K/train/original/",
-              "/dataset/sharedir/research/AM-2K/AM-2K/validation/original/"]
+image_roots = ["/dataset/sharedir/research/AM-2K/AM-2K/train/original/",
+               "/dataset/sharedir/research/AM-2K/AM-2K/validation/original/"]
 meta_json = '/dataset/sharedir/dataset/AM-2K/meta_data.json'
 
 
@@ -56,24 +56,24 @@ class AM2KDataset(BaseDataset):
 def get_meta(meta_json):
     image_paths = []
     cnt = 0
-    for root, dir, files in os.walk(image_root):
-        for file in files:
-            image_path = os.path.join(root, file)
-            if (not os.path.exists(image_path)):
-                print(f"File not found: {image_path}")
-                continue
-            cnt += 1
-            type = 'train'
-            if 'validation' in image_path:
-                type = 'validation'
+    for image_root in image_roots:
+        for root, dir, files in os.walk(image_root):
+            for file in files:
+                image_path = os.path.join(root, file)
+                if (not os.path.exists(image_path)):
+                    print(f"File not found: {image_path}")
+                    continue
+                cnt += 1
+                type = 'train'
+                if 'validation' in image_path:
+                    type = 'validation'
 
-            image_paths.append({
-                'id': cnt,
-                'img_path': image_path,
-                'type': type
-            })
-    image_paths = sorted(image_paths)
-    cnt = 0
+                image_paths.append({
+                    'id': cnt,
+                    'img_path': image_path,
+                    'type': type
+                })
+    image_paths = sorted(image_paths, key=lambda x: x['id'])
     with open(meta_json, 'w') as f:
         for image_path in image_paths:
             json.dump(image_path, f)
