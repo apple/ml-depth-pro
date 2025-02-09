@@ -1,27 +1,28 @@
-[tool.poetry]
+[project]
 name = "depth-pro"
 version = "0.1.0"
 description = ""
-authors = ["Jan Smółka <jp.smolka@gmail.com>"]
+authors = [{ name = "Jan Smółka", email = "jp.smolka@gmail.com" }]
+requires-python = ">=3.10"
 readme = "README.md"
+dependencies = [
+    "torch>=2.5.0",
+    "torchvision>=0.20.0",
+    "numpy>=1.26.1",
+    "timm>=1.0.11",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.12.1",
+    "ruff>=0.7.0",
+    "opencv-python>=4.10.0.84",
+    "icecream>=2.1.3",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.dependencies]
-python = "^3.12"
-torch = "^2.5.0"
-torchvision = "^0.20.0"
-numpy = "^1.26.1"
-timm = "^1.0.11"
-
-[tool.poetry.group.dev.dependencies]
-poethepoet = "^0.26.1"
-mypy = "^1.12.1"
-ruff = "^0.7.0"
-opencv-python = "^4.10.0.84"
-icecream = "^2.1.3"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 90
@@ -34,6 +35,3 @@ docstring-code-format = true
 [tool.poe.tasks]
 format = "ruff format"
 lint = "ruff check"
-build_whl = "poetry build"
-install_whl = "pip install --force-reinstall dist/*.whl"
-prepare = ["build_whl", "install_whl"]
