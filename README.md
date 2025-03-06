@@ -32,7 +32,9 @@ source get_pretrained_models.sh   # Files will be downloaded to `checkpoints` di
 We provide a helper script to directly run the model on a single image:
 ```bash
 # Run prediction on a single image:
-depth-pro-run -i ./data/example.jpg
+depth-pro-run \
+  -i ./data/example.jpg \
+  -o ./output
 # Run `depth-pro-run -h` for available options.
 ```
 

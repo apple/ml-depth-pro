@@ -213,3 +213,4 @@ data/**
 checkpoints/**
 output/**
 .vscode/**
+wildpose_data
