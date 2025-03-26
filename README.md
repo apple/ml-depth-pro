@@ -58,6 +58,14 @@ depth = prediction["depth"]  # Depth in [m].
 focallength_px = prediction["focallength_px"]  # Focal length in pixels.
 ```
 
+### Visualize the depth image
+
+Visualize the depth image with Open3D.
+
+```bash
+python src/tools/visualize_rgbd.py --input_depth output/depth.npz --input_image data/rgb.jpeg --focal_length 1500.0
+```
+
 
 ### Evaluation (boundary metrics)
 
