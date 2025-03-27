@@ -66,6 +66,13 @@ Visualize the depth image with Open3D.
 python src/tools/visualize_rgbd.py --input_depth output/depth.npz --input_image data/rgb.jpeg --focal_length 1500.0
 ```
 
+Visualize the depth image with Rerun.
+
+```bash
+python src/tools/visualize_rerun.py --depth_file output/depth.npz --image_file data/rgb.jpeg
+```
+
+![](docs/imgs/rerun_screenshot.png)
 
 ### Evaluation (boundary metrics)
 
