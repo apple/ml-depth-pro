@@ -16,6 +16,8 @@ The model in this repository is a reference implementation, which has been re-tr
 We recommend setting up a virtual environment. Using e.g. miniconda, the `depth_pro` package can be installed via:
 
 ```bash
+git clone https://github.com/apple/ml-depth-pro.git && cd ml-depth-pro
+
 conda create -n depth-pro -y python=3.9
 conda activate depth-pro
 
@@ -47,6 +49,7 @@ model, transform = depth_pro.create_model_and_transforms()
 model.eval()
 
 # Load and preprocess an image.
+image_path = "./data/example.jpg"
 image, _, f_px = depth_pro.load_rgb(image_path)
 image = transform(image)
 
