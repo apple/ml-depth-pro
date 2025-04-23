@@ -27,6 +27,13 @@ To download pretrained checkpoints follow the code snippet below:
 source get_pretrained_models.sh   # Files will be downloaded to `checkpoints` directory.
 ```
 
+The checkpoints are [also available in Hugging Face](https://huggingface.co/apple/DepthPro). To download from Hugging Face, please follow the snippet below:
+
+```bash
+pip install huggingface-hub
+huggingface-cli download --local-dir checkpoints apple/DepthPro
+```
+
 ### Running from commandline
 
 We provide a helper script to directly run the model on a single image:
