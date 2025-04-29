@@ -1,4 +1,9 @@
 ## Depth Pro: Sharp Monocular Metric Depth in Less Than a Second
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![GitHub commits](https://badgen.net/github/commits/apple/ml-depth-pro)](https://GitHub.com/apple/ml-depth-pro/commit/)
+[![GitHub license](https://badgen.net/github/license/apple/ml-depth-pro)](https://github.com/apple/ml-depth-pro/blob/master/LICENSE)
+[![GitHub forks](https://img.shields.io/github/forks/apple/ml-depth-pro.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/apple/ml-depth-pro/network/)
+[![GitHub stars](https://img.shields.io/github/stars/apple/ml-depth-pro.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/apple/ml-depth-pro/stargazers/)
 
 This software project accompanies the research paper:
 **[Depth Pro: Sharp Monocular Metric Depth in Less Than a Second](https://arxiv.org/abs/2410.02073)**, 
